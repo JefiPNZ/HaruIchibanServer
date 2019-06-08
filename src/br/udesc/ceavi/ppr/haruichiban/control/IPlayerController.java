@@ -79,4 +79,8 @@ public interface IPlayerController {
 
 	public void setFluxoController(IFluxoController fluxoController);
 
+    public Object getColor();
+
+    public void initDeck();
+
 }

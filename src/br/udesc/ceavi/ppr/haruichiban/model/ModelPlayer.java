@@ -17,20 +17,22 @@ public class ModelPlayer {
     private List<Flor> listaDeFlores;
     private List<Flor> listaMao;
     private Color myColor;
+    int tamanhoDeck;
 
     public ModelPlayer(Color cor, int tamanhoDeck) {
         this.points = 0;
         listaDeFlores = new ArrayList<>();
         listaMao = new ArrayList<>();
         this.myColor = cor;
-        initDeck(tamanhoDeck);
-        controlHand();
+        this.tamanhoDeck = tamanhoDeck;
+        initDeck();
     }
 
-    private void initDeck(int tamanho) {
-        for (int i = 1; i < tamanho; i++) {
+    public void initDeck() {
+        for (int i = 1; i < this.tamanhoDeck; i++) {
             listaDeFlores.add(GameController.getInstance().getFactoryPecas().createFlor(myColor, i, this));
         }
+        controlHand();
     }
 
     public void addPontos(int newPoints) {

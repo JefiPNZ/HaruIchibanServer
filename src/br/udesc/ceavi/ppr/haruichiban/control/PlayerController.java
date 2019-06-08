@@ -21,8 +21,6 @@ import br.udesc.ceavi.ppr.haruichiban.model.flores.Flor;
 import br.udesc.ceavi.ppr.haruichiban.state.TitleOfGardener;
 import br.udesc.ceavi.ppr.haruichiban.state.UntitledGardener;
 import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Controlador de Player, servirar para controlar as acoes do player no jogo
@@ -52,8 +50,10 @@ public class PlayerController extends Thread implements IPlayerController {
 
     private Fase fase;
 
-    private Scanner in;
-    private PrintWriter out;
+    private Scanner clienteResquest;
+    
+    private PrintWriter clienteResponder;
+    
     private boolean jogador;
 
     /**
@@ -100,6 +100,7 @@ public class PlayerController extends Thread implements IPlayerController {
         return player.getListaDeFlores().size();
     }
 
+    @Override
     public Color getColor() {
         return player.getColor();
     }
@@ -221,8 +222,8 @@ public class PlayerController extends Thread implements IPlayerController {
 
     public void setSocket(Socket mySocket, String msg) {
         try {
-            this.in = new Scanner(mySocket.getInputStream());
-            this.out = new PrintWriter(mySocket.getOutputStream(), true);
+            this.clienteResquest = new Scanner(mySocket.getInputStream());
+            this.clienteResponder = new PrintWriter(mySocket.getOutputStream(), true);
             GameController.getInstance().notifyClientRequest("Jogador " + msg + " conectou.");
             sendResource("Vc e o player " + msg);
             this.start();
@@ -235,8 +236,8 @@ public class PlayerController extends Thread implements IPlayerController {
     public void run() {
         GameController gcInstance = GameController.getInstance();
         while (jogador) {
-            if (in.hasNext()) {
-                String requisicao = in.nextLine();
+            if (clienteResquest.hasNext()) {
+                String requisicao = clienteResquest.nextLine();
                 gcInstance.notifyClientRequest("Recebeu uma requisição.");
                 switch (requisicao.split(",")[0]) {
                     case "I":// Requisi�oes para esta classe
@@ -265,7 +266,7 @@ public class PlayerController extends Thread implements IPlayerController {
 //                else {
                     try {
                         try {
-                            in.next();
+                            clienteResquest.next();
                         }
                         catch(NoSuchElementException ex){
                             this.jogador = false;
@@ -307,7 +308,12 @@ public class PlayerController extends Thread implements IPlayerController {
     }
 
     public void sendResource(String resource) {
-        out.println(resource);
-        out.flush();
+        clienteResponder.println(resource);
+        clienteResponder.flush();
+    }
+
+    @Override
+    public void initDeck() {
+        player.initDeck();
     }
 }
