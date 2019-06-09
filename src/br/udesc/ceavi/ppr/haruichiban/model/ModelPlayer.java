@@ -25,7 +25,6 @@ public class ModelPlayer {
         listaMao = new ArrayList<>();
         this.myColor = cor;
         this.tamanhoDeck = tamanhoDeck;
-        initDeck();
     }
 
     public void initDeck() {

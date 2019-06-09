@@ -8,10 +8,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import javax.swing.SwingUtilities;
-
-import com.google.gson.Gson;
-
 import br.udesc.ceavi.ppr.haruichiban.command.ChooseFlowerPlayer;
 import br.udesc.ceavi.ppr.haruichiban.exceptions.PlayNaoPodeSeTornarJuniorException;
 import br.udesc.ceavi.ppr.haruichiban.exceptions.PlayNaoPodeSeTornarSeniorException;
@@ -51,10 +47,12 @@ public class PlayerController extends Thread implements IPlayerController {
     private Fase fase;
 
     private Scanner clienteResquest;
-    
+
     private PrintWriter clienteResponder;
-    
+
     private boolean jogador;
+
+    private RequestProcess canal;
 
     /**
      *
@@ -112,9 +110,9 @@ public class PlayerController extends Thread implements IPlayerController {
 
     @Override
     public void choseFlowerDeck() {
-        SwingUtilities.invokeLater(() -> {
-            sendResource("C,ESCOLHAUMAFLOR");
-        });
+//        SwingUtilities.invokeLater(() -> {
+//            sendResource("C,ESCOLHAUMAFLOR");
+//        });
     }
 
     @Override
@@ -183,26 +181,26 @@ public class PlayerController extends Thread implements IPlayerController {
 
     @Override
     public void notifySemTitulo() {
-        sendResource("S,YouAreSemTitulo");
+//        sendResource("S,YouAreSemTitulo");
     }
 
     @Override
     public void notifyYouAJunior() {
-        sendResource("S,YouAreJunior");
+//        sendResource("S,YouAreJunior");
     }
 
     @Override
     public void notifyYouASenior() {
-        sendResource("S,YouASenior");
+//        sendResource("S,YouASenior");
     }
 
     @Override
     public void notifySimples(String messagem) {
-        sendResource("M," + messagem);
+//        sendResource("M," + messagem);
     }
 
     private void notifiyFlowerChoise() {
-        sendResource("C,EscolhaUmaFlorEnd");
+//        sendResource("C,EscolhaUmaFlorEnd");
     }
 
     @Override
@@ -225,7 +223,8 @@ public class PlayerController extends Thread implements IPlayerController {
             this.clienteResquest = new Scanner(mySocket.getInputStream());
             this.clienteResponder = new PrintWriter(mySocket.getOutputStream(), true);
             GameController.getInstance().notifyClientRequest("Jogador " + msg + " conectou.");
-            sendResource("Vc e o player " + msg);
+            canal = new RequestProcess(clienteResquest, clienteResponder, this);
+
             this.start();
         } catch (IOException e) {
             System.exit(0);
@@ -234,86 +233,35 @@ public class PlayerController extends Thread implements IPlayerController {
 
     @Override
     public void run() {
-        GameController gcInstance = GameController.getInstance();
         while (jogador) {
             if (clienteResquest.hasNext()) {
-                String requisicao = clienteResquest.nextLine();
-                gcInstance.notifyClientRequest("Recebeu uma requisição.");
-                switch (requisicao.split(",")[0]) {
-                    case "I":// Requisi�oes para esta classe
-                        gcInstance.notifyClientRequest("Comando Interno:");
-                        gcInstance.notifyClientRequest(requisicao);
-                        comandoInterno(requisicao);
-                        break;
-                    case "E"://// Requisi�oes para GameController
-                        gcInstance.notifyClientRequest("Comando Externo:");
-                        gcInstance.notifyClientRequest(requisicao);
-                        gcInstance.clientRequest(requisicao, this);
-                        break;
-                    case "END"://// Requisicao Para Fechar o Jogo
-                        gcInstance.notifyClientRequest("Finalizou a execução.");
-                        jogador = false;
-                        break;
-                    default:
-                        gcInstance.notifyClientRequest("Comando Desconhecido.");
-                        break;
+                canal.processar();
+            } else {
+                try {
+                    try {
+                        clienteResquest.next();
+                    } catch (NoSuchElementException ex) {
+                        this.jogador = false;
+                    }
+                    Thread.sleep(250);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
                 }
             }
-            else {
-//                if(!this.socket.isConnected()){
-//                    this.jogador = false;
-//                }
-//                else {
-                    try {
-                        try {
-                            clienteResquest.next();
-                        }
-                        catch(NoSuchElementException ex){
-                            this.jogador = false;
-                        }
-                        Thread.sleep(250);
-                    } catch (InterruptedException ex) {}
-//                }
-            }
         }
     }
 
-    private void comandoInterno(String requisicao) {
-        switch (requisicao.split(",")[1]) {
-            case "MYCOLOR":
-                sendResource(new Gson().toJson(getColor()));
-                GameController.getInstance().notifyClientRequest("Jogador: " + getColor());
-                return;
-            case "HAND":
-                StringBuilder sb = new StringBuilder();
-                this.getHand().forEach(valor -> sb.append(valor).append(','));
-                sb.substring(0, sb.length() - 2);
-                sendResource(sb.toString().substring(0, sb.length() - 1));
-                return;
-            case "PILESIZE":
-                sendResource("" + this.getPileSize());
-                return;
-            case "CHOSEFLOR":
-                int index = Integer.parseInt(requisicao.split(",")[2]);
-                chooseFlowerDeckEnd(index);
-                return;
-            default:
-                return;
-        }
-
-    }
-    
-    public boolean isConnectado(){
+    @Override
+    public boolean isConnectado() {
         return this.jogador;
-    }
-
-    public void sendResource(String resource) {
-        clienteResponder.println(resource);
-        clienteResponder.flush();
     }
 
     @Override
     public void initDeck() {
         player.initDeck();
+    }
+
+    public RequestProcess getCanal() {
+        return canal;
     }
 }

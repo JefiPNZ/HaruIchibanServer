@@ -19,8 +19,8 @@ import javax.swing.ScrollPaneConstants;
  *
  * @author Jeferson Penz
  */
-public class ServerFrame extends JFrame implements ServerStatusObserver{
-    
+public class ServerFrame extends JFrame implements ServerStatusObserver {
+
     private List<String> mensagens;
     private JLabel logMensagens;
     private JScrollPane pane;
@@ -31,8 +31,8 @@ public class ServerFrame extends JFrame implements ServerStatusObserver{
         this.initFrame();
         GameController.getInstance().addServerStatusObserver(this);
     }
-    
-    private void initFrame(){
+
+    private void initFrame() {
         this.setVisible(false);
         this.setSize(new Dimension(800, 600));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -49,18 +49,28 @@ public class ServerFrame extends JFrame implements ServerStatusObserver{
 
     @Override
     public void onClientRequest(String message) {
+        imprime("<p color='#2E8B57'>" + message + "</p>");
+    }
+
+    private void imprime(String message) {
         this.mensagens.add(message);
         StringJoiner joiner = new StringJoiner("<br/>");
-        for (ListIterator<String> iterador = this.mensagens.listIterator(0); iterador.hasNext(); ){
+        for (ListIterator<String> iterador = this.mensagens.listIterator(0); iterador.hasNext();) {
             joiner.add(iterador.next());
         }
+
         this.logMensagens.setText("<html>" + joiner.toString() + "</html>");
         this.pane.getVerticalScrollBar().setValue(this.pane.getVerticalScrollBar().getMaximum());
     }
 
     @Override
     public void onError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
+        imprime("<p color='#CD3333'>" + message + "</p>");
     }
-    
+
+    @Override
+    public void onServerRespond(String resource) {
+        imprime("<p color='#1E90FF'>" + resource + "</p>");
+    }
+
 }

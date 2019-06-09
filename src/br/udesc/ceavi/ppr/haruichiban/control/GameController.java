@@ -21,8 +21,9 @@ import javax.swing.SwingUtilities;
  *
  * @author Jeferson e Gustavo
  *
- * AVISO - N�O USAR INSTANCEOF, COMPARAR USANDO GETCLASS() == .CLASS. - N�O PODE HAVER //JOptionPane NO CONTROLLER. -
- * Quando adicionar um componente transparente (como overlay por ex.), lembrar do setOpaque(false).
+ * AVISO - N�O USAR INSTANCEOF, COMPARAR USANDO GETCLASS() == .CLASS. - N�O PODE
+ * HAVER //JOptionPane NO CONTROLLER. - Quando adicionar um componente
+ * transparente (como overlay por ex.), lembrar do setOpaque(false).
  */
 public class GameController {
 
@@ -117,7 +118,8 @@ public class GameController {
     }
 
     /**
-     * Retorna o gerador de dados aleatórios fixo. Este gerador apresenta sempre os mesmo valores quando é criado.
+     * Retorna o gerador de dados aleatórios fixo. Este gerador apresenta sempre
+     * os mesmo valores quando é criado.
      *
      * @return
      */
@@ -231,19 +233,6 @@ public class GameController {
         this.servidor = servidor;
     }
 
-    public void clientRequest(String request, PlayerController playerRequest) {
-        switch (request.split(",")[1]) {
-            case "GAMECONFIG":
-                this.notifyClientRequest("Game Controller : " + request);
-                String resposta = new Gson().toJson(this.gameConfig);
-                playerRequest.sendResource(resposta);
-                this.notifyClientRequest("Requisicao Respondida");
-                break;
-            default:
-                break;
-        }
-    }
-
     public void notifyClientRequest(String message) {
         SwingUtilities.invokeLater(() -> {
             this.statusObservers.forEach((statusObserver) -> {
@@ -258,6 +247,18 @@ public class GameController {
                 statusObserver.onError(message);
             });
         });
+    }
+
+    void notifyServerRespond(String resource) {
+        SwingUtilities.invokeLater(() -> {
+            this.statusObservers.forEach((statusObserver) -> {
+                statusObserver.onServerRespond(resource);
+            });
+        });
+    }
+
+    public GameConfig getGameConfig() {
+        return gameConfig;
     }
 
 }

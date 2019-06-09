@@ -9,5 +9,7 @@ public interface ServerStatusObserver {
     public void onClientRequest(String message);
 
     public void onError(String message);
+
+    public void onServerRespond(String resource);
     
 }

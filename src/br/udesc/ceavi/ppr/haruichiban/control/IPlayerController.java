@@ -83,4 +83,6 @@ public interface IPlayerController {
 
     public void initDeck();
 
+    public boolean isConnectado();
+
 }
