@@ -1,5 +1,7 @@
 package br.udesc.ceavi.ppr.haruichiban.control.observers;
 
+import br.udesc.ceavi.ppr.haruichiban.control.PlayerController;
+
 /**
  *
  * @author Jeferson Penz

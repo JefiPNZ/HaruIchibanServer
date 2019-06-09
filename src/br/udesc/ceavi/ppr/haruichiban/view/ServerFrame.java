@@ -1,6 +1,7 @@
 package br.udesc.ceavi.ppr.haruichiban.view;
 
 import br.udesc.ceavi.ppr.haruichiban.control.GameController;
+import br.udesc.ceavi.ppr.haruichiban.control.PlayerController;
 import br.udesc.ceavi.ppr.haruichiban.control.observers.ServerStatusObserver;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -51,9 +52,8 @@ public class ServerFrame extends JFrame implements ServerStatusObserver {
     public void onClientRequest(String message) {
         imprime("<p color='#2E8B57'>" + message + "</p>");
     }
-
-    private void imprime(String message) {
-        this.mensagens.add(message);
+    
+    private void trataMensagens(){
         StringJoiner joiner = new StringJoiner("<br/>");
         for (ListIterator<String> iterador = this.mensagens.listIterator(0); iterador.hasNext();) {
             joiner.add(iterador.next());
@@ -61,6 +61,11 @@ public class ServerFrame extends JFrame implements ServerStatusObserver {
 
         this.logMensagens.setText("<html>" + joiner.toString() + "</html>");
         this.pane.getVerticalScrollBar().setValue(this.pane.getVerticalScrollBar().getMaximum());
+    }
+
+    private void imprime(String message) {
+        this.mensagens.add(message);
+        this.trataMensagens();
     }
 
     @Override

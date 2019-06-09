@@ -1,6 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.command;
 
-import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
+import br.udesc.ceavi.ppr.haruichiban.decorator.IModelBoardTile;
 import br.udesc.ceavi.ppr.haruichiban.model.animais.Animal;
 
 /**
@@ -12,9 +12,9 @@ import br.udesc.ceavi.ppr.haruichiban.model.animais.Animal;
 public class MoveAnimalCommand implements Command {
 
     private Animal animal;
-    private ModelBoardTile boardTile;
+    private IModelBoardTile boardTile;
 
-    public MoveAnimalCommand(Animal animal, ModelBoardTile boardTile) {
+    public MoveAnimalCommand(Animal animal, IModelBoardTile boardTile) {
         this.animal = animal;
         this.boardTile = boardTile;
     }

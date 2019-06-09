@@ -15,6 +15,7 @@ import br.udesc.ceavi.ppr.haruichiban.model.ModelPlayer;
 import br.udesc.ceavi.ppr.haruichiban.model.flores.Flor;
 import br.udesc.ceavi.ppr.haruichiban.state.TitleOfGardener;
 import br.udesc.ceavi.ppr.haruichiban.state.UntitledGardener;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
@@ -261,7 +262,7 @@ public class PlayerController extends Thread implements IPlayerController {
             }
         }
     }
-
+    
     @Override
     public boolean isConnectado() {
         return this.jogador;
@@ -285,5 +286,4 @@ public class PlayerController extends Thread implements IPlayerController {
     public Socket getSocket() {
         return mySocket;
     }
-
 }

@@ -6,7 +6,7 @@ import br.udesc.ceavi.ppr.haruichiban.control.IBoardController;
 import br.udesc.ceavi.ppr.haruichiban.control.IPlayerController;
 import java.awt.Point;
 import br.udesc.ceavi.ppr.haruichiban.control.IFluxoController;
-import br.udesc.ceavi.ppr.haruichiban.utils.Diretion;
+import br.udesc.ceavi.ppr.haruichiban.utils.Direction;
 
 /**
  *
@@ -59,7 +59,7 @@ public class JuniorFlowerBoard implements BoardMovement {
     }
 
     @Override
-    public boolean addDiretion(Diretion deretion) {
+    public boolean addDiretion(Direction deretion) {
         return false;
     }
 

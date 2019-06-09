@@ -7,9 +7,9 @@ import br.udesc.ceavi.ppr.haruichiban.control.GameController;
 import br.udesc.ceavi.ppr.haruichiban.control.IBoardController;
 import br.udesc.ceavi.ppr.haruichiban.control.IFluxoController;
 import br.udesc.ceavi.ppr.haruichiban.control.IPlayerController;
-import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
+import br.udesc.ceavi.ppr.haruichiban.decorator.IModelBoardTile;
 import br.udesc.ceavi.ppr.haruichiban.model.animais.Animal;
-import br.udesc.ceavi.ppr.haruichiban.utils.Diretion;
+import br.udesc.ceavi.ppr.haruichiban.utils.Direction;
 import java.awt.Point;
 
 /**
@@ -47,7 +47,7 @@ public class SeniorNewDrakLeafAnimal extends SeniorNewDrakLeaf implements BoardM
     }
 
     private boolean validar(Point positionBoard) {
-        ModelBoardTile boardTile = boardController.getBoardTile(positionBoard);
+        IModelBoardTile boardTile = boardController.getBoardTile(positionBoard);
         if (!boardTile.hasFolha()) {
             player.notifySimples("Animal Apenas Pode Ser Colocado Na Folha");
             return true;
@@ -89,7 +89,7 @@ public class SeniorNewDrakLeafAnimal extends SeniorNewDrakLeaf implements BoardM
     }
 
     public void executePutFlower() {
-        ModelBoardTile boardTile = boardController.getBoardTile(animalLocal);
+        IModelBoardTile boardTile = boardController.getBoardTile(animalLocal);
         GameController gameController = GameController.getInstance();
 
         this.animal = (Animal) boardTile.getFolha().removerPecaDeFlor();
@@ -102,7 +102,7 @@ public class SeniorNewDrakLeafAnimal extends SeniorNewDrakLeaf implements BoardM
     }
 
     @Override
-    public boolean addDiretion(Diretion deretion) {
+    public boolean addDiretion(Direction deretion) {
         return false;
     }
 

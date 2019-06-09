@@ -1,7 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.command;
 
-import br.udesc.ceavi.ppr.haruichiban.command.Command;
-import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
+import br.udesc.ceavi.ppr.haruichiban.decorator.IModelBoardTile;
 import br.udesc.ceavi.ppr.haruichiban.model.folha.Folha;
 
 /**
@@ -12,10 +11,10 @@ import br.udesc.ceavi.ppr.haruichiban.model.folha.Folha;
  */
 public class FirstWindCommand implements Command {
 
-    private final ModelBoardTile boardTile;
+    private final IModelBoardTile boardTile;
     private final Folha peca;
 
-    public FirstWindCommand(ModelBoardTile boardTile, Folha peca) {
+    public FirstWindCommand(IModelBoardTile boardTile, Folha peca) {
         this.boardTile = boardTile;
         this.peca = peca;
     }

@@ -1,6 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.command;
 
-import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
+import br.udesc.ceavi.ppr.haruichiban.decorator.IModelBoardTile;
 import br.udesc.ceavi.ppr.haruichiban.model.flores.Flor;
 
 /**
@@ -12,9 +12,9 @@ import br.udesc.ceavi.ppr.haruichiban.model.flores.Flor;
 public class FlowerBoardCommand implements Command {
 
     private Flor flor;
-    private ModelBoardTile boardTile;
+    private IModelBoardTile boardTile;
 
-    public FlowerBoardCommand(Flor flor, ModelBoardTile boardTile) {
+    public FlowerBoardCommand(Flor flor, IModelBoardTile boardTile) {
         this.flor = flor;
         this.boardTile = boardTile;
     }

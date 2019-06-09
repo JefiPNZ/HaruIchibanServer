@@ -1,6 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.builder;
 
-import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
+import br.udesc.ceavi.ppr.haruichiban.decorator.IModelBoardTile;
 import java.awt.Point;
 
 /**
@@ -13,9 +13,9 @@ public abstract class BoardBuilder {
     protected Point posicaoAnimalBaixo = null;
     protected Point posicaoVitoriaPreta = null;
     protected boolean[][] tabuleiro = null;
-    protected ModelBoardTile[][] board;
+    protected IModelBoardTile[][] board;
 
-    public ModelBoardTile[][] getProduto() {
+    public IModelBoardTile[][] getProduto() {
         return board;
     }
 

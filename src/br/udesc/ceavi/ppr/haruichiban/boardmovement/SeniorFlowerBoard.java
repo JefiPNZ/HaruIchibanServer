@@ -5,8 +5,8 @@ import br.udesc.ceavi.ppr.haruichiban.control.GameController;
 import br.udesc.ceavi.ppr.haruichiban.control.IBoardController;
 import br.udesc.ceavi.ppr.haruichiban.control.IFluxoController;
 import br.udesc.ceavi.ppr.haruichiban.control.IPlayerController;
-import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
-import br.udesc.ceavi.ppr.haruichiban.utils.Diretion;
+import br.udesc.ceavi.ppr.haruichiban.decorator.IModelBoardTile;
+import br.udesc.ceavi.ppr.haruichiban.utils.Direction;
 import java.awt.Point;
 
 /**
@@ -47,7 +47,7 @@ public class SeniorFlowerBoard implements BoardMovement {
     }
 
     private boolean validandoPosicao(Point positionBoard) {
-        ModelBoardTile boardTile = boardController.getBoardTile(positionBoard);
+        IModelBoardTile boardTile = boardController.getBoardTile(positionBoard);
         if (!boardTile.hasFolha()) {
             player.notifySimples("A Posicao Escolhida Não Tem Folha");
             return true;
@@ -92,7 +92,7 @@ public class SeniorFlowerBoard implements BoardMovement {
     }
 
     @Override
-    public boolean addDiretion(Diretion deretion) {
+    public boolean addDiretion(Direction deretion) {
         return false;
     }
 

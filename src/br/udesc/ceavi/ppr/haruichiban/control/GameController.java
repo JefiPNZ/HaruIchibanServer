@@ -1,6 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.control;
 
-import br.udesc.ceavi.ppr.haruichiban.HarulchibanServidor;
+import br.udesc.ceavi.ppr.haruichiban.HaruIchibanServidor;
 import br.udesc.ceavi.ppr.haruichiban.abstractfactory.*;
 import br.udesc.ceavi.ppr.haruichiban.builder.*;
 import br.udesc.ceavi.ppr.haruichiban.command.Command;
@@ -58,7 +58,7 @@ public class GameController {
      */
     private long fixedSeed;
 
-    private HarulchibanServidor servidor;
+    private HaruIchibanServidor servidor;
 
     private BoardBuilder builderTabuleiro;
 
@@ -230,7 +230,7 @@ public class GameController {
         this.servidor.startServidor(gameConfig);
     }
 
-    public void setServidor(HarulchibanServidor servidor) {
+    public void setServidor(HaruIchibanServidor servidor) {
         this.servidor = servidor;
     }
 

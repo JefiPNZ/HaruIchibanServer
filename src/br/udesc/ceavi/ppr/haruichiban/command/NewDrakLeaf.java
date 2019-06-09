@@ -1,6 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.command;
 
-import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
+import br.udesc.ceavi.ppr.haruichiban.decorator.IModelBoardTile;
 
 /**
  *
@@ -10,9 +10,9 @@ import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
  */
 public class NewDrakLeaf implements Command {
 
-    private ModelBoardTile boardTile;
+    private IModelBoardTile boardTile;
 
-    public NewDrakLeaf(ModelBoardTile boardTile) {
+    public NewDrakLeaf(IModelBoardTile boardTile) {
         this.boardTile = boardTile;
     }
 

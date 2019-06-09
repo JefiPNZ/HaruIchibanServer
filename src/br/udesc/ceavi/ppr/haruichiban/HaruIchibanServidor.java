@@ -13,12 +13,12 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HarulchibanServidor implements Runnable {
+public class HaruIchibanServidor implements Runnable {
 
     private GameConfig config = null;
 
     public static void main(String[] args) {
-        Thread mainThread = new Thread(new HarulchibanServidor());
+        Thread mainThread = new Thread(new HaruIchibanServidor());
         mainThread.start();
         FrameConfig tela = new FrameConfig();
         tela.setVisible(true);
@@ -32,7 +32,7 @@ public class HarulchibanServidor implements Runnable {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-                Logger.getLogger(HarulchibanServidor.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(HaruIchibanServidor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         ServerFrame frame = new ServerFrame();

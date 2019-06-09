@@ -1,6 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.boardmovement;
 
-import br.udesc.ceavi.ppr.haruichiban.utils.Diretion;
+import br.udesc.ceavi.ppr.haruichiban.utils.Direction;
 import java.awt.Point;
 
 /**
@@ -13,7 +13,7 @@ public interface BoardMovement {
 
     public boolean addPoint(Point positionBoard);
 
-    public boolean addDiretion(Diretion deretion);
+    public boolean addDiretion(Direction deretion);
 
     public void execute();
 

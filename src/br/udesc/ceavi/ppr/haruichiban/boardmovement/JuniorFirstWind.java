@@ -6,9 +6,9 @@ import br.udesc.ceavi.ppr.haruichiban.control.GameController;
 import br.udesc.ceavi.ppr.haruichiban.control.IBoardController;
 import br.udesc.ceavi.ppr.haruichiban.control.IFluxoController;
 import br.udesc.ceavi.ppr.haruichiban.control.IPlayerController;
-import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
+import br.udesc.ceavi.ppr.haruichiban.decorator.IModelBoardTile;
 import br.udesc.ceavi.ppr.haruichiban.model.folha.Folha;
-import br.udesc.ceavi.ppr.haruichiban.utils.Diretion;
+import br.udesc.ceavi.ppr.haruichiban.utils.Direction;
 import java.awt.Point;
 
 /**
@@ -23,7 +23,7 @@ public class JuniorFirstWind implements BoardMovement {
     private IBoardController boardController;
     private Point origem;
     private Point fim;
-    private Diretion destino;
+    private Direction destino;
     private IFluxoController fluxoController;
 
     public JuniorFirstWind(IPlayerController player, IBoardController boardController, IFluxoController fluxoController) {
@@ -48,7 +48,7 @@ public class JuniorFirstWind implements BoardMovement {
     }
 
     private boolean validacaoOrigem(Point positionBoard) {
-        ModelBoardTile boardTile = boardController.getBoardTile(positionBoard);
+        IModelBoardTile boardTile = boardController.getBoardTile(positionBoard);
         if (!boardTile.hasFolha()) {
             player.notifySimples("So Pode Mover Uma Folha");
             return false;
@@ -79,7 +79,7 @@ public class JuniorFirstWind implements BoardMovement {
         return true;
     }
 
-    private boolean validarMovimento(Point newPoint, Diretion p) {
+    private boolean validarMovimento(Point newPoint, Direction p) {
         switch (p) {
             case NORTE:
                 if (0 <= newPoint.y) {
@@ -131,7 +131,7 @@ public class JuniorFirstWind implements BoardMovement {
     }
 
     private void mover(Point atual, Point fim,
-            Diretion p,
+            Direction p,
             Folha peca, MacroCommand macroCommand) {
         if (!atual.equals(this.fim)) {
             Point pProxima = null;
@@ -159,7 +159,7 @@ public class JuniorFirstWind implements BoardMovement {
     }
 
     @Override
-    public boolean addDiretion(Diretion deretion) {
+    public boolean addDiretion(Direction deretion) {
 
         if (origem != null) {
             if (validarMovimento(origem, deretion)) {

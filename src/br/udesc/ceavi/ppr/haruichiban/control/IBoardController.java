@@ -2,8 +2,8 @@ package br.udesc.ceavi.ppr.haruichiban.control;
 
 import br.udesc.ceavi.ppr.haruichiban.boardmovement.BoardMovement;
 import br.udesc.ceavi.ppr.haruichiban.control.observers.BoardObserverProxy;
-import br.udesc.ceavi.ppr.haruichiban.model.ModelBoardTile;
-import br.udesc.ceavi.ppr.haruichiban.utils.Diretion;
+import br.udesc.ceavi.ppr.haruichiban.decorator.IModelBoardTile;
+import br.udesc.ceavi.ppr.haruichiban.utils.Direction;
 import java.awt.Point;
 
 /**
@@ -35,17 +35,17 @@ public interface IBoardController {
 
     public void eventoDeSelecao(Point newSelection);
 
-    public void botaoClick(Diretion newSelection);
+    public void botaoClick(Direction newSelection);
 
     public void removeBoardMovement();
 
-    public ModelBoardTile getBoardTile(Point localLerf);
+    public IModelBoardTile getBoardTile(Point localLerf);
 
     public void initBoardMovement(BoardMovement juniorFlowerBoard);
 
     public boolean isPosicaoValida(int x, int y);
 
-    public ModelBoardTile[][] getTabuleiro();
+    public IModelBoardTile[][] getTabuleiro();
 
     public boolean validaPontuacao();
 
