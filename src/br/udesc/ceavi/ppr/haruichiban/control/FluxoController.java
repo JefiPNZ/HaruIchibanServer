@@ -160,6 +160,7 @@ public class FluxoController implements IFluxoController {
     @Override
     public void getPlayerPoints() {
         this.notificaMudancaEstado("Verificando Pontuação");
+        this.controllerBoard.validaPontuacao();
         getPlayerPointsEnd();
     }
 

@@ -1,6 +1,7 @@
 package br.udesc.ceavi.ppr.haruichiban.view;
 
 import br.udesc.ceavi.ppr.haruichiban.control.GameController;
+import br.udesc.ceavi.ppr.haruichiban.control.PlayerController;
 import br.udesc.ceavi.ppr.haruichiban.control.observers.ServerStatusObserver;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -50,17 +51,27 @@ public class ServerFrame extends JFrame implements ServerStatusObserver{
     @Override
     public void onClientRequest(String message) {
         this.mensagens.add(message);
+        this.trataMensagens();
+    }
+
+    @Override
+    public void onError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void onResourceResponse(String message, PlayerController target) {
+        this.mensagens.add("Enviando recurso: " + message + " para o jogador " + target.getColor());
+        this.trataMensagens();
+    }
+    
+    private void trataMensagens(){
         StringJoiner joiner = new StringJoiner("<br/>");
         for (ListIterator<String> iterador = this.mensagens.listIterator(0); iterador.hasNext(); ){
             joiner.add(iterador.next());
         }
         this.logMensagens.setText("<html>" + joiner.toString() + "</html>");
         this.pane.getVerticalScrollBar().setValue(this.pane.getVerticalScrollBar().getMaximum());
-    }
-
-    @Override
-    public void onError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
     }
     
 }

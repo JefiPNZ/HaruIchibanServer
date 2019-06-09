@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 
 import br.udesc.ceavi.ppr.haruichiban.control.GameController;
 import br.udesc.ceavi.ppr.haruichiban.control.PlayerController;
+import br.udesc.ceavi.ppr.haruichiban.control.TopPlayerVerificationRunnable;
 import br.udesc.ceavi.ppr.haruichiban.model.GameConfig;
 import br.udesc.ceavi.ppr.haruichiban.view.FrameConfig;
 import br.udesc.ceavi.ppr.haruichiban.view.ServerFrame;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class HarulchibanServidor implements Runnable{
     
@@ -51,6 +53,7 @@ public class HarulchibanServidor implements Runnable{
     private void iniciaSocket(GameConfig gameConfig) throws IOException{
         GameController gcInstance = GameController.getInstance();
         try (ServerSocket listener = new ServerSocket(60000)) {
+            boolean b = true;
             gcInstance.notifyClientRequest("Aguardando Jogadores.");
             PlayerController pTopo = new PlayerController(gameConfig.getColorTop(), gameConfig.getTamanho());
             gcInstance.setTopPlayer(pTopo);
@@ -58,20 +61,28 @@ public class HarulchibanServidor implements Runnable{
             pTopo.setSocket(topPlayerSocket, "TOP");
             gcInstance.notifyClientRequest("Jogador superior entrou com endereço: " + topPlayerSocket.getRemoteSocketAddress());
             
+            TopPlayerVerificationRunnable aguardando = new TopPlayerVerificationRunnable(pTopo);
+            new Thread(aguardando).start();
             PlayerController pBase = new PlayerController(gameConfig.getColorBotton(), gameConfig.getTamanho());
             gcInstance.setBottomPlayer(pBase);
             Socket bottomPlayerSocket = listener.accept();
             pBase.setSocket(bottomPlayerSocket, "BOTTON");
             gcInstance.notifyClientRequest("Jogador superior entrou com endereço: " + bottomPlayerSocket.getRemoteSocketAddress());
+            aguardando.termina();
             
-            gcInstance.startGame();
-            
-            while (pBase.isConnectado() && pTopo.isConnectado() && this.config != null) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException ex) {
-                    this.config = null;
-                    gcInstance.notifyClientRequest("");
+            if(pTopo.isConnectado() && pBase.isConnectado()){
+                pTopo.sendResource("STRT");
+                pBase.sendResource("STRT");
+                if(pTopo.aguardaPronto() && pBase.aguardaPronto()){
+                    gcInstance.startGame();
+                }
+                while (pBase.isConnectado() && pTopo.isConnectado() && this.config != null) {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        this.config = null;
+                        gcInstance.notifyClientRequest("");
+                    }
                 }
             }
             if(!pBase.isConnectado()){
@@ -81,6 +92,8 @@ public class HarulchibanServidor implements Runnable{
                 gcInstance.notifyClientRequest("Jogador superior desconectou...");
             }
         }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Erro de Socket: " + ex.toString());
+        }
     }
-
 }

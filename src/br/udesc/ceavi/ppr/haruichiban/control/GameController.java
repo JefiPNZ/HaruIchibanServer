@@ -260,4 +260,12 @@ public class GameController {
         });
     }
 
+    public void notifyResourceResponse(String message, PlayerController target) {
+        SwingUtilities.invokeLater(() -> {
+            this.statusObservers.forEach((statusObserver) -> {
+                statusObserver.onResourceResponse(message, target);
+            });
+        });
+    }
+
 }

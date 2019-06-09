@@ -259,20 +259,15 @@ public class PlayerController extends Thread implements IPlayerController {
                 }
             }
             else {
-//                if(!this.socket.isConnected()){
-//                    this.jogador = false;
-//                }
-//                else {
+                try {
                     try {
-                        try {
-                            in.next();
-                        }
-                        catch(NoSuchElementException ex){
-                            this.jogador = false;
-                        }
-                        Thread.sleep(250);
-                    } catch (InterruptedException ex) {}
-//                }
+                        in.next();
+                    }
+                    catch(NoSuchElementException ex){
+                        this.jogador = false;
+                    }
+                    Thread.sleep(250);
+                } catch (InterruptedException ex) {}
             }
         }
     }
@@ -307,7 +302,13 @@ public class PlayerController extends Thread implements IPlayerController {
     }
 
     public void sendResource(String resource) {
+        GameController.getInstance().notifyResourceResponse(resource, this);
         out.println(resource);
         out.flush();
+    }
+    
+    public boolean aguardaPronto(){
+        String ret = in.nextLine();
+        return ret.equals("READY");
     }
 }
