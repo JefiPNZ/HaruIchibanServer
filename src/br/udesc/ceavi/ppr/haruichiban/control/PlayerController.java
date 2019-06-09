@@ -1,7 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.control;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
@@ -16,6 +15,7 @@ import br.udesc.ceavi.ppr.haruichiban.model.ModelPlayer;
 import br.udesc.ceavi.ppr.haruichiban.model.flores.Flor;
 import br.udesc.ceavi.ppr.haruichiban.state.TitleOfGardener;
 import br.udesc.ceavi.ppr.haruichiban.state.UntitledGardener;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 
 /**
@@ -53,6 +53,11 @@ public class PlayerController extends Thread implements IPlayerController {
     private boolean jogador;
 
     private RequestProcess canal;
+    /**
+     * Controller de possicao true == top false == booton
+     */
+    private boolean top;
+    private Socket mySocket;
 
     /**
      *
@@ -63,6 +68,25 @@ public class PlayerController extends Thread implements IPlayerController {
         this.title = new UntitledGardener();
         this.player = new ModelPlayer(cor, tamanhoDoDeck);
         jogador = true;
+    }
+
+    public PlayerController(Color cor, int tamanhoDeck, Socket mySocket, String top) {
+        this(cor, tamanhoDeck);
+        try {
+            this.mySocket = mySocket;
+            this.clienteResquest = new Scanner(mySocket.getInputStream());
+            this.clienteResponder = new PrintWriter(mySocket.getOutputStream(), true);
+
+            GameController.getInstance().notifyClientRequest("Jogador " + top + " conectou.");
+
+            canal = new RequestProcess(clienteResquest, clienteResponder, this);
+
+            this.top = top.equalsIgnoreCase("top");
+
+            this.start();
+        } catch (IOException e) {
+            System.exit(0);
+        }
     }
 
     @Override
@@ -218,19 +242,6 @@ public class PlayerController extends Thread implements IPlayerController {
         return player.haveFlowers();
     }
 
-    public void setSocket(Socket mySocket, String msg) {
-        try {
-            this.clienteResquest = new Scanner(mySocket.getInputStream());
-            this.clienteResponder = new PrintWriter(mySocket.getOutputStream(), true);
-            GameController.getInstance().notifyClientRequest("Jogador " + msg + " conectou.");
-            canal = new RequestProcess(clienteResquest, clienteResponder, this);
-
-            this.start();
-        } catch (IOException e) {
-            System.exit(0);
-        }
-    }
-
     @Override
     public void run() {
         while (jogador) {
@@ -264,4 +275,15 @@ public class PlayerController extends Thread implements IPlayerController {
     public RequestProcess getCanal() {
         return canal;
     }
+
+    @Override
+    public boolean isTop() {
+        return top;
+    }
+
+    @Override
+    public Socket getSocket() {
+        return mySocket;
+    }
+
 }

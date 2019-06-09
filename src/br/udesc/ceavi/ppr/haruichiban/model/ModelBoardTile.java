@@ -1,6 +1,9 @@
 package br.udesc.ceavi.ppr.haruichiban.model;
 
 import br.udesc.ceavi.ppr.haruichiban.model.folha.Folha;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import java.awt.Color;
 
 /**
  * Representa uma célula no tabuleiro.
@@ -49,4 +52,28 @@ public class ModelBoardTile {
         return this.folha;
     }
 
+    Gson gson = new Gson();
+    
+    public String toJson() {
+        JsonObject criando = new JsonObject();
+        
+        if (hasFolha()) {
+            criando.add("corDaFolha", gson.toJsonTree(folha.getCor()));
+            criando.addProperty("folharRotacao", folha.getRotacao());
+            criando.addProperty("folhaNome", folha.getClass().getSimpleName());
+        
+            if (folha.hasFilhote()) {
+                criando.add("corDoFilhote", gson.toJsonTree(folha.getFilhote().getCor()));
+                criando.addProperty("filhoteName", folha.getFilhote().getClass().getSimpleName());
+            }
+
+            //Verifica se essa tem uma peca
+            if (folha.hasPeca()) {
+                criando.add("corDaPeca", gson.toJsonTree(folha.getPeca().getCor()));
+                criando.addProperty("pecaRotacao", folha.getPeca().getRotacao());
+                criando.addProperty("pecaName", folha.getPeca().getClass().getSimpleName());
+            }
+        }
+        return criando.toString();
+    }
 }

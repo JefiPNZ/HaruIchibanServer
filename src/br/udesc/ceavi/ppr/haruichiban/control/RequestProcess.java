@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
+import java.awt.Point;
 
 public class RequestProcess {
 
@@ -23,7 +24,7 @@ public class RequestProcess {
 
     public void processar() {
         String requisicao = clienteRequest.nextLine();
-        gameController().notifyClientRequest(requisicao);
+        gameController().notifyClientRequest(player.getSocket().getPort() + " - " + requisicao);
         switch (requisicao.split(",")[0]) {
             case "MY":// Requisicoes para player
                 comandoJogador(requisicao);
@@ -36,7 +37,7 @@ public class RequestProcess {
                 break;
             default:
                 sendResource("Request-Perdida", requisicao.split(",")[1]);
-                gameController().notifyError("Comando Perdido : " + requisicao);
+                gameController().notifyError(player.getSocket().getPort() + " - " + "Comando Perdido : " + requisicao);
                 break;
         }
     }
@@ -47,9 +48,11 @@ public class RequestProcess {
             case "Color":
                 sendResource(new Gson().toJson(player.getColor()), requisicao);
                 return;
+
             case "Position":
                 sendResource(isTopPlayer() ? "TOP" : "BOTTON", requisicao);
                 return;
+
             case "Hand":
                 StringBuilder sb = new StringBuilder();
                 String resposta = "";
@@ -62,16 +65,19 @@ public class RequestProcess {
                 }
                 sendResource(resposta, requisicao);
                 return;
+
             case "PileSize":
-                sendResource("" + player.getPileSize(), requisicao);
+                sendResource(player.getPileSize(), requisicao);
                 return;
+
             case "ProduceDeck":
                 player.initDeck();
                 sendResource("DeckProduzido", requisicao);
                 return;
+
             default:
                 sendResource("Request-Perdida", requisicao);
-                gameController().notifyError("Comando Jogador Perdido : " + comando);
+                gameController().notifyError(player.getSocket().getPort() + " - " + "Comando Jogador Perdido : " + comando);
         }
 
     }
@@ -82,9 +88,11 @@ public class RequestProcess {
             case "Color":
                 sendResource(new Gson().toJson(oponnet().getColor()), requisicao);
                 return;
+
             case "Position":
                 sendResource(isTopPlayer() ? "TOP" : "BOTTON", requisicao);
                 return;
+
             case "Hand":
                 StringBuilder sb = new StringBuilder();
                 String resposta = "";
@@ -97,37 +105,71 @@ public class RequestProcess {
                 }
                 sendResource(resposta, requisicao);
                 return;
+
             case "PileSize":
-                int pileSize = oponnet().getPileSize();
-                System.out.println("PileSize OP" + pileSize);
-                sendResource("" + pileSize, requisicao);
+                sendResource(oponnet().getPileSize(), requisicao);
                 return;
+
             default:
                 sendResource("Request-Perdida", requisicao);
-                gameController().notifyError("Comando Oponnet Perdido : " + comando);
+                gameController().notifyError(player.getSocket().getPort() + " - " + "Comando Oponnet Perdido : " + comando);
         }
     }
 
     private void comandoGame(String comando) {
         String requisicao = comando.split(",")[1];
         switch (requisicao) {
+
             case "HaveOponent":
                 if (isTopPlayer() && gameController().getBottomPlayer() == null
-                        || isBottonPlayer() && gameController().getTopPlayer() == null) {
+                        || !isTopPlayer() && gameController().getTopPlayer() == null) {
                     sendResource("false", requisicao);
                 } else {
                     sendResource("true", comando);
                 }
                 return;
+
             case "GameConfig":
                 GameConfig gameConfig = gameController().getGameConfig();
                 String resouse = gson.toJson(gameConfig);
                 sendResource(resouse, requisicao);
                 return;
 
+            case "JogoContinua":
+                sendResource("true", requisicao);
+                return;
+
+            case "BordHeight":
+                sendResource(gameController().getBoardController().getAlturaTabuleiro(), comando);
+                return;
+
+            case "BordWidth":
+                sendResource(gameController().getBoardController().getLarguraTabuleiro(), comando);
+                return;
+
+            case "Estacao":
+                sendResource(gameController().getGameConfig().getEstacao(), comando);
+                return;
+            case "BoardTile":
+                String pontos = comando.split(":")[1];
+
+                String x = pontos.split(",")[0];
+                String y = pontos.split(",")[1];
+                sendResource(gameController()
+                        .getBoardController()
+                        .getBoardTile(
+                                new Point(
+                                        Integer.parseInt(x),
+                                        Integer.parseInt(y)
+                                ))
+                        .toJson(), comando);
+                return;
+            case "ENDGAME":
+                sendResource("Oi", comando);
+                return;
             default:
                 sendResource("Request-Perdida", requisicao);
-                gameController().notifyError("Comando Game Perdido : " + comando);
+                gameController().notifyError(player.getSocket().getPort() + " - " + "Comando Game Perdido : " + comando);
         }
 
     }
@@ -141,11 +183,7 @@ public class RequestProcess {
     }
 
     private boolean isTopPlayer() {
-        return gameController().getTopPlayer() != null && gameController().getTopPlayer().equals(player);
-    }
-
-    private boolean isBottonPlayer() {
-        return gameController().getBottomPlayer() != null && gameController().getBottomPlayer().equals(player);
+        return player.isTop();
     }
 
     private GameController gameController() {
@@ -153,13 +191,16 @@ public class RequestProcess {
     }
 
     public void sendResource(String resposta, String requisicao) {
-        if (resposta.contains("Request-Perdida")) {
-            gameController().notifyError("Request-Perdida : " + requisicao);
-        } else {
-            clienteAnswer.println(resposta);
-            clienteAnswer.flush();
-            gameController().notifyServerRespond("Requisicao Respondida : " + requisicao);
-        }
+        clienteAnswer.println(resposta);
+        clienteAnswer.flush();
+        gameController().notifyServerRespond(player.getSocket().getPort() + " - " + "Requisicao Respondida : " + requisicao);
+
+    }
+
+    public void sendResource(int resposta, String requisicao) {
+        clienteAnswer.println(resposta);
+        clienteAnswer.flush();
+        gameController().notifyServerRespond(player.getSocket().getPort() + " - " + "Requisicao Respondida : " + requisicao);
     }
 
 }

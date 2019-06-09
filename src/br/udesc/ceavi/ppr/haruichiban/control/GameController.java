@@ -11,7 +11,6 @@ import br.udesc.ceavi.ppr.haruichiban.model.GameConfig;
 import java.awt.Color;
 import java.util.Random;
 
-import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.SwingUtilities;
@@ -127,11 +126,11 @@ public class GameController {
         return new Random(this.fixedSeed);
     }
 
-    public PlayerController getBottomPlayer() {
+    public IPlayerController getBottomPlayer() {
         return bottomPlayer;
     }
 
-    public PlayerController getTopPlayer() {
+    public IPlayerController getTopPlayer() {
         return topPlayer;
     }
 
@@ -160,6 +159,8 @@ public class GameController {
         this.commandInvoker = new CommandInvoker();
         this.controlDeFluxo = new FluxoController(this);
         this.controlDeFluxo.startGame();
+        bottomPlayer.initDeck();
+        topPlayer.initDeck();
     }
 
 //

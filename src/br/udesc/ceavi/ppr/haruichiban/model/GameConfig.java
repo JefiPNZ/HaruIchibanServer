@@ -21,7 +21,7 @@ public class GameConfig implements Serializable {
 		this.estacao = estacao;
 	}
 
-	public int getTamanho() {
+	public int getTamanhoDeck() {
 		return tamanho;
 	}
 

@@ -6,6 +6,8 @@ import br.udesc.ceavi.ppr.haruichiban.exceptions.PlayNaoPodeSeTornarSeniorExcept
 import br.udesc.ceavi.ppr.haruichiban.exceptions.PlayNaoPodeSeTornarUntitledGardenerException;
 import br.udesc.ceavi.ppr.haruichiban.model.flores.Flor;
 import br.udesc.ceavi.ppr.haruichiban.state.TitleOfGardener;
+import java.awt.Color;
+import java.net.Socket;
 import java.util.List;
 
 /**
@@ -46,7 +48,6 @@ public interface IPlayerController {
 //    public void addObserver(PlayerPanelObserver obs);
 //
 //    public void setFluxoController(IFluxoController aThis);
-
     public void becomeSeniorGardener() throws PlayNaoPodeSeTornarSeniorException;
 
     public void becomeJuniorGardener() throws PlayNaoPodeSeTornarJuniorException;
@@ -77,12 +78,16 @@ public interface IPlayerController {
 
     public boolean haveFlowers();
 
-	public void setFluxoController(IFluxoController fluxoController);
+    public void setFluxoController(IFluxoController fluxoController);
 
-    public Object getColor();
+    public Color getColor();
 
     public void initDeck();
 
     public boolean isConnectado();
+
+    public boolean isTop();
+
+    public Socket getSocket();
 
 }

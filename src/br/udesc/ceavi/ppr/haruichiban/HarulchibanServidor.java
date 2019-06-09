@@ -53,21 +53,18 @@ public class HarulchibanServidor implements Runnable {
         GameController gcInstance = GameController.getInstance();
         try (ServerSocket listener = new ServerSocket(60000)) {
             gcInstance.notifyClientRequest("Aguardando Jogadores.");
-            gcInstance.setTopPlayer(new PlayerController(gameConfig.getColorTop(), gameConfig.getTamanho()));
 
-            Socket topPlayerSocket = listener.accept();
-            gcInstance.getTopPlayer().setSocket(topPlayerSocket, "TOP");
+            gcInstance.setTopPlayer(new PlayerController(gameConfig.getColorTop(), gameConfig.getTamanhoDeck(), listener.accept(), "TOP"));
+            Socket topPlayerSocket = gcInstance.getTopPlayer().getSocket();
             gcInstance.notifyClientRequest("Jogador superior entrou com endereço: " + topPlayerSocket.getRemoteSocketAddress());
 
-            gcInstance.setBottomPlayer(new PlayerController(gameConfig.getColorBotton(), gameConfig.getTamanho()));
-            Socket bottomPlayerSocket = listener.accept();
-            gcInstance.getBottomPlayer().setSocket(bottomPlayerSocket, "BOTTON");
+            gcInstance.setBottomPlayer(new PlayerController(gameConfig.getColorBotton(), gameConfig.getTamanhoDeck(), listener.accept(), "BOTTON"));
+            Socket bottomPlayerSocket = gcInstance.getBottomPlayer().getSocket();
             gcInstance.notifyClientRequest("Jogador superior entrou com endereço: " + bottomPlayerSocket.getRemoteSocketAddress());
-
 
             IPlayerController pBase = gcInstance.getBottomPlayer();
             IPlayerController pTopo = gcInstance.getTopPlayer();
-            
+
             gcInstance.startGame();
             while (pBase.isConnectado() && pTopo.isConnectado() && this.config != null) {
                 try {
