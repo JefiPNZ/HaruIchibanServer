@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import com.google.gson.Gson;
 import java.awt.Point;
+import java.time.LocalDateTime;
 
 public class RequestProcess {
 
@@ -22,9 +23,14 @@ public class RequestProcess {
         this.gson = new Gson();
     }
 
+    public String getHora() {
+        LocalDateTime now = LocalDateTime.now();
+        return "(" + now.getHour() + ':' + now.getMinute() + ':' + now.getSecond() + ')';
+    }
+
     public void processar() {
-        String requisicao = aguardar();
-        gameController().notifyClientRequest(player.getSocket().getPort() + " - " + requisicao);
+        String requisicao = clienteRequest.nextLine();
+        gameController().notifyClientRequest(getHora() + " - " + player.getSocket().getPort() + " - " + requisicao);
         switch (requisicao.split(",")[0]) {
             case "MY":// Requisicoes para player
                 comandoJogador(requisicao);
@@ -37,7 +43,7 @@ public class RequestProcess {
                 break;
             default:
                 sendResource("Request-Perdida", requisicao.split(",")[1]);
-                gameController().notifyError(player.getSocket().getPort() + " - " + "Comando Perdido : " + requisicao);
+                gameController().notifyError(getHora() + " - " + player.getSocket().getPort() + " - " + "Comando Perdido : " + requisicao);
                 break;
         }
     }
@@ -88,7 +94,7 @@ public class RequestProcess {
 
             default:
                 sendResource("Request-Perdida", requisicao);
-                gameController().notifyError(player.getSocket().getPort() + " - " + "Comando Jogador Perdido : " + comando);
+                gameController().notifyError(getHora() + " - " + player.getSocket().getPort() + " - " + "Comando Jogador Perdido : " + comando);
         }
 
     }
@@ -123,7 +129,7 @@ public class RequestProcess {
 
             default:
                 sendResource("Request-Perdida", requisicao);
-                gameController().notifyError(player.getSocket().getPort() + " - " + "Comando Oponnet Perdido : " + comando);
+                gameController().notifyError(getHora() + " - " + player.getSocket().getPort() + " - " + "Comando Oponnet Perdido : " + comando);
         }
     }
 
@@ -180,7 +186,7 @@ public class RequestProcess {
                 return;
             default:
                 sendResource("Request-Perdida", requisicao);
-                gameController().notifyError(player.getSocket().getPort() + " - " + "Comando Game Perdido : " + comando);
+                gameController().notifyError(getHora() + " - " + player.getSocket().getPort() + " - " + "Comando Game Perdido : " + comando);
         }
 
     }
@@ -204,14 +210,14 @@ public class RequestProcess {
     public void sendResource(String resposta, String requisicao) {
         clienteAnswer.println(resposta);
         clienteAnswer.flush();
-        gameController().notifyServerRespond(player.getSocket().getPort() + " - " + "Requisicao Respondida : " + requisicao);
+        gameController().notifyServerRespond(getHora() + " - " + player.getSocket().getPort() + " - " + "Requisicao Respondida : " + requisicao);
 
     }
 
     public void sendResource(int resposta, String requisicao) {
         clienteAnswer.println(resposta);
         clienteAnswer.flush();
-        gameController().notifyServerRespond(player.getSocket().getPort() + " - " + "Requisicao Respondida : " + requisicao);
+        gameController().notifyServerRespond(getHora() + " - " + player.getSocket().getPort() + " - " + "Requisicao Respondida : " + requisicao);
     }
 
 }
