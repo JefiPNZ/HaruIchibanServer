@@ -250,15 +250,13 @@ public class PlayerController extends Thread implements IPlayerController {
                 canal.processar();
             } else {
                 try {
-                    try {
-                        clienteResquest.next();
-                    } catch (NoSuchElementException ex) {
-                        this.jogador = false;
-                    }
-                    Thread.sleep(250);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+                    clienteResquest.next();
+                } catch (NoSuchElementException ex) {
+                    this.jogador = false;
                 }
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException ex) {}
             }
         }
     }
@@ -285,5 +283,11 @@ public class PlayerController extends Thread implements IPlayerController {
     @Override
     public Socket getSocket() {
         return mySocket;
+    }
+    
+    @Override
+    public boolean aguardaPronto(){
+        String ret = getCanal().aguardar();
+        return ret.equals("MY,READY");
     }
 }

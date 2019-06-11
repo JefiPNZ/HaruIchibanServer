@@ -66,12 +66,12 @@ public class GameController {
     /**
      * Representa o jogador do topo da tela.
      */
-    private PlayerController topPlayer;
+    private IPlayerController topPlayer;
 
     /**
      * Representa o jogador da base da tela.
      */
-    private PlayerController bottomPlayer;
+    private IPlayerController bottomPlayer;
 
     private FactoryPecas factoryPecas;
 
@@ -134,11 +134,11 @@ public class GameController {
         return topPlayer;
     }
 
-    public void setTopPlayer(PlayerController topPlayer) {
+    public void setTopPlayer(IPlayerController topPlayer) {
         this.topPlayer = topPlayer;
     }
 
-    public void setBottomPlayer(PlayerController bottomPlayer) {
+    public void setBottomPlayer(IPlayerController bottomPlayer) {
         this.bottomPlayer = bottomPlayer;
     }
 

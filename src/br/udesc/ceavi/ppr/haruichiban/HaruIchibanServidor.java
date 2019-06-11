@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import br.udesc.ceavi.ppr.haruichiban.control.GameController;
 import br.udesc.ceavi.ppr.haruichiban.control.IPlayerController;
 import br.udesc.ceavi.ppr.haruichiban.control.PlayerController;
+import br.udesc.ceavi.ppr.haruichiban.control.TopPlayerVerificationRunnable;
 import br.udesc.ceavi.ppr.haruichiban.model.GameConfig;
 import br.udesc.ceavi.ppr.haruichiban.view.FrameConfig;
 import br.udesc.ceavi.ppr.haruichiban.view.ServerFrame;
@@ -54,30 +55,42 @@ public class HaruIchibanServidor implements Runnable {
         try (ServerSocket listener = new ServerSocket(60000)) {
             gcInstance.notifyClientRequest("Aguardando Jogadores.");
 
-            gcInstance.setTopPlayer(new PlayerController(gameConfig.getColorTop(), gameConfig.getTamanhoDeck(), listener.accept(), "TOP"));
+            IPlayerController pTopo = new PlayerController(gameConfig.getColorTop(), gameConfig.getTamanhoDeck(), listener.accept(), "TOP");
+            gcInstance.setTopPlayer(pTopo);
             Socket topPlayerSocket = gcInstance.getTopPlayer().getSocket();
             gcInstance.notifyClientRequest("Jogador superior entrou com endereço: " + topPlayerSocket.getRemoteSocketAddress());
 
-            gcInstance.setBottomPlayer(new PlayerController(gameConfig.getColorBotton(), gameConfig.getTamanhoDeck(), listener.accept(), "BOTTON"));
+            TopPlayerVerificationRunnable aguardando = new TopPlayerVerificationRunnable(pTopo);
+            new Thread(aguardando).start();
+
+            IPlayerController pBase = new PlayerController(gameConfig.getColorBotton(), gameConfig.getTamanhoDeck(), listener.accept(), "BOTTON");
+            gcInstance.setBottomPlayer(pBase);
             Socket bottomPlayerSocket = gcInstance.getBottomPlayer().getSocket();
-            gcInstance.notifyClientRequest("Jogador superior entrou com endereço: " + bottomPlayerSocket.getRemoteSocketAddress());
+            gcInstance.notifyClientRequest("Jogador inferior entrou com endereço: " + bottomPlayerSocket.getRemoteSocketAddress());
 
-            IPlayerController pBase = gcInstance.getBottomPlayer();
-            IPlayerController pTopo = gcInstance.getTopPlayer();
+            aguardando.termina();
 
-            gcInstance.startGame();
-            while (pBase.isConnectado() && pTopo.isConnectado() && this.config != null) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException ex) {
-                    this.config = null;
-                    gcInstance.notifyClientRequest("");
+            if (pTopo.isConnectado() && pBase.isConnectado()) {
+                pBase.getCanal().sendResource("STRT", "Iniciar");
+                pTopo.getCanal().sendResource("STRT", "Iniciar");
+//                if(pTopo.aguardaPronto() && pBase.aguardaPronto()){
+//                    System.out.println("Oiii");
+                gcInstance.startGame();
+//                    System.out.println("Ola");
+//                }
+                while (pBase.isConnectado() && pTopo.isConnectado() && this.config != null) {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        this.config = null;
+                        gcInstance.notifyClientRequest("");
+                    }
                 }
-            }
-            if (!pBase.isConnectado()) {
-                gcInstance.notifyClientRequest("Jogador inferior desconectou...");
-            } else {
-                gcInstance.notifyClientRequest("Jogador superior desconectou...");
+                if (!pBase.isConnectado()) {
+                    gcInstance.notifyClientRequest("Jogador inferior desconectou...");
+                } else {
+                    gcInstance.notifyClientRequest("Jogador superior desconectou...");
+                }
             }
         }
     }

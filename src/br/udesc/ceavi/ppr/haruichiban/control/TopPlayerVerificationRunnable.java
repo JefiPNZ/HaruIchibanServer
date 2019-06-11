@@ -6,9 +6,9 @@ package br.udesc.ceavi.ppr.haruichiban.control;
  */
 public class TopPlayerVerificationRunnable implements Runnable{
     private boolean bOk;
-    private PlayerController pTopo;
+    private IPlayerController pTopo;
 
-    public TopPlayerVerificationRunnable(PlayerController pTopo) {
+    public TopPlayerVerificationRunnable(IPlayerController pTopo) {
         bOk = false;
         this.pTopo = pTopo;
     }

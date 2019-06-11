@@ -81,6 +81,8 @@ public interface IPlayerController {
     public void setFluxoController(IFluxoController fluxoController);
 
     public Color getColor();
+    
+    public RequestProcess getCanal();
 
     public void initDeck();
 
@@ -89,5 +91,7 @@ public interface IPlayerController {
     public boolean isTop();
 
     public Socket getSocket();
+    
+    public boolean aguardaPronto();
 
 }

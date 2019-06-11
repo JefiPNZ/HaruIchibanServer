@@ -23,7 +23,7 @@ public class RequestProcess {
     }
 
     public void processar() {
-        String requisicao = clienteRequest.nextLine();
+        String requisicao = aguardar();
         gameController().notifyClientRequest(player.getSocket().getPort() + " - " + requisicao);
         switch (requisicao.split(",")[0]) {
             case "MY":// Requisicoes para player
@@ -42,9 +42,20 @@ public class RequestProcess {
         }
     }
 
+    public String aguardar() {
+        System.out.println("Esperando");
+        String requisicao;
+        requisicao = clienteRequest.nextLine();
+        System.out.println("Resposta Agurada: " + requisicao);
+        return requisicao;
+    }
+
     private void comandoJogador(String comando) {
         String requisicao = comando.split(",")[1];
         switch (requisicao) {
+            case "Ready":
+
+                return;
             case "Color":
                 sendResource(new Gson().toJson(player.getColor()), requisicao);
                 return;
