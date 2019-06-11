@@ -39,13 +39,17 @@ public class BoardGigaBuilder extends BoardBuilder {
             this.board[i] = new IModelBoardTile[7];
             for (int j = 0; j < 7; j++) {
                 this.board[i][j] = new SimpleModelBoardTile();
-                if(i + 1 < tabuleiro.length){
+            }
+        }
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                if(i + 1 < this.board.length){
                     this.board[i][j] = new ModelBoardTileHorizontalDecorator(this.board[i][j], this.board[i + 1][j]);
-                    if(j + 1 < tabuleiro[i].length){
+                    if(j + 1 < this.board[i].length){
                         this.board[i][j] = new ModelBoardTileDiagonalDecorator(this.board[i][j], this.board[i + 1][j + 1]);
                     }
                 }
-                if(j + 1 < tabuleiro[i].length){
+                if(j + 1 < this.board[i].length){
                     this.board[i][j] = new ModelBoardTileVerticalDecorator(this.board[i][j], this.board[i][j + 1]);
                 }
             }
