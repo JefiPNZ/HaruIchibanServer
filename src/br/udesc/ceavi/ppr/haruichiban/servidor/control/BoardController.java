@@ -1,7 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.servidor.control;
 
 import br.udesc.ceavi.ppr.haruichiban.servidor.control.interfaces.IBoardController;
-import br.udesc.ceavi.ppr.haruichiban.servidor.boardmovement.BoardMovement;
 import br.udesc.ceavi.ppr.haruichiban.servidor.builder.BoardBuilder;
 import br.udesc.ceavi.ppr.haruichiban.servidor.builder.BuilderDirector;
 import br.udesc.ceavi.ppr.haruichiban.servidor.model.IModelBoardTile;
@@ -16,12 +15,12 @@ public class BoardController implements IBoardController {
 
     private IModelBoardTile[][] tabuleiro;
     private Point folhaEscura;
-    private BoardMovement boardMovement;
 
     public BoardController() {
         initTabuleiro();
     }
 
+    @Override
     public void initTabuleiro() {
         BoardBuilder builder = GameServidorController.getInstance().getBuilder();
         BuilderDirector director = new BuilderDirector(builder);
