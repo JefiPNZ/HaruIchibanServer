@@ -1,7 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.servidor.control;
 
 import br.udesc.ceavi.ppr.haruichiban.servidor.control.interfaces.IBoardController;
-import br.udesc.ceavi.ppr.haruichiban.servidor.boardmovement.BoardMovement;
 import br.udesc.ceavi.ppr.haruichiban.servidor.builder.BoardBuilder;
 import br.udesc.ceavi.ppr.haruichiban.servidor.builder.BuilderDirector;
 import br.udesc.ceavi.ppr.haruichiban.servidor.model.IModelBoardTile;
@@ -16,12 +15,12 @@ public class BoardController implements IBoardController {
 
     private IModelBoardTile[][] tabuleiro;
     private Point folhaEscura;
-    private BoardMovement boardMovement;
 
     public BoardController() {
         initTabuleiro();
     }
 
+    @Override
     public void initTabuleiro() {
         BoardBuilder builder = GameServidorController.getInstance().getBuilder();
         BuilderDirector director = new BuilderDirector(builder);
@@ -121,7 +120,6 @@ public class BoardController implements IBoardController {
                 IModelBoardTile tile = tabuleiro[row][column];
                 if (tile.hasFolha() && tile.getFolha().isEscura()) {
                     setFolhaEscura(new Point(row, column));
-                    System.out.println("Posicao da Flor da Flor Escura: " + getFolhaEscura());
                 }
                 if (tile.hasFolha() && tile.getFolha().hasFilhote()) {
                     tile.getFolha().colocarPecaNaFolha(GameServidorController.getInstance().getFactoryPecas().createAnimal(tile.getFolha().getFilhote().getCor()));

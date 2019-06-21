@@ -95,6 +95,7 @@ public class PlayerController implements IPlayerController {
         this.title = title;
     }
 
+    @Override
     public void addPontos(int pontos) {
         player.addPontos(pontos);
     }
