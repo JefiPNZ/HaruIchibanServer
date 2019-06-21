@@ -20,7 +20,7 @@ public class ChooseFlower extends FluxoState {
     }
 
     @Override
-    public void sistemCommand() {
+    public void systemCommand() {
         game.limparListaJardineiro();
         playerCommandFluxoState();
     }
@@ -46,8 +46,7 @@ public class ChooseFlower extends FluxoState {
     public void playerInformeFluxoStateEnd(IPlayerController player, String parametro) {
         ArrayList<String> carta = gson.fromJson(parametro, ArrayList.class);
         int escolha = Integer.parseInt(carta.get(0));
-        GameServidorController.getInstance().executeCommand(
-                new ChooseFlowerPlayer(player, escolha));
+        GameServidorController.getInstance().executeCommand(new ChooseFlowerPlayer(player, escolha));
         //Mando Atualizar
         player.getPackageServerOutput().newGet(ModelGet.MY_HAND, player.getHand());
         player.getPackageServerOutput().newGet(ModelGet.MY_PILESIZE, player.getPileSize());
@@ -60,7 +59,12 @@ public class ChooseFlower extends FluxoState {
 
     @Override
     public void nextFase() {
-        fluxo.setFluxoState(new DifineTitles());
+        fluxo.setFluxoState(new DefineTitles());
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Escolha das flores";
     }
 
 }

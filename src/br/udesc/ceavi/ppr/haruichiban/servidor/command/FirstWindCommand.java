@@ -21,7 +21,17 @@ public class FirstWindCommand implements Command {
 
     @Override
     public void execute() {
-          boardTile.addFolha(peca);
+        boardTile.addFolha(peca);
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Vento da primavera na pe\u00e7a: " + this.peca;
+    }
+
+    @Override
+    public String getTipoLog() {
+        return "Comando";
     }
 
 }

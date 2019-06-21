@@ -33,12 +33,14 @@ public class SimpleModelBoardTile implements IModelBoardTile{
      *
      * @param folha
      */
+    @Override
     public void addFolha(Folha folha) {
         this.folha = folha;
     }
 
     /**
      * Remove a folha da peça.
+     * @return 
      */
     public Folha removeFolha() {
         Folha retono = folha;
@@ -51,14 +53,17 @@ public class SimpleModelBoardTile implements IModelBoardTile{
      *
      * @return true tem, false não tem
      */
+    @Override
     public boolean hasFolha() {
         return this.folha != null;
     }
 
+    @Override
     public Folha getFolha() {
         return this.folha;
     }
 
+    @Override
     public JsonObject toJson() {
         JsonObject modelBoardJson = new JsonObject();
         Gson gson = new Gson();
@@ -124,5 +129,10 @@ public class SimpleModelBoardTile implements IModelBoardTile{
     @Override
     public boolean isPontuado(TipoPontuacao direcao) {
         return this.pontuado.contains(direcao);
+    }
+
+    @Override
+    public String toString() {
+        return "{" + "folha=" + folha + '}';
     }
 }

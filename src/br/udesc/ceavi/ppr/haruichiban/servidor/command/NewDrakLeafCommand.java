@@ -29,4 +29,14 @@ public class NewDrakLeafCommand implements Command {
         boardController.setFolhaEscura(newDrakLeaf);
     }
 
+    @Override
+    public String getDescricaoLog() {
+        return "Tornada folha na posi\u00e7\u00e3o: " + this.newDrakLeaf + " escura";
+    }
+
+    @Override
+    public String getTipoLog() {
+        return "Comando";
+    }
+
 }

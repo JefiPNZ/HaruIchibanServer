@@ -20,7 +20,7 @@ public class MakeSound extends FluxoState {
     }
 
     @Override
-    public synchronized void sistemCommand() {
+    public synchronized void systemCommand() {
         titleOfGardeners.add(TitleOfGardener.SCREAM_WINNER);
         titleOfGardeners.add(TitleOfGardener.SCREAM_LOSER);
         playerCommandFluxoState();
@@ -52,6 +52,11 @@ public class MakeSound extends FluxoState {
     @Override
     public void nextFase() {
         fluxo.setFluxoState(new AutomaticFlowering());
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "A\u00e7\u00e3o de Coaxar";
     }
 
 }

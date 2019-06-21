@@ -17,8 +17,9 @@ import br.udesc.ceavi.ppr.haruichiban.utils.Images;
 import java.awt.Color;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,7 @@ public class GameServidorController {
      * @param bottomPlayerColor
      */
     public void begin(String varianteTabuleiro, String tamanhoTabuleiro, Color topPlayerColor, Color bottomPlayerColor) {
+        this.notifyServer("Utilizando Mapa de " + varianteTabuleiro);
         switch (varianteTabuleiro) {
             default:
             case "Primavera":
@@ -130,6 +132,7 @@ public class GameServidorController {
                 Images.mapImagemInverno();
                 break;
         }
+        this.notifyServer("Utilizando tabuleiro " + tamanhoTabuleiro);
         int tamanhoDeckInicial;
         switch (tamanhoTabuleiro) {
             default:
@@ -143,7 +146,9 @@ public class GameServidorController {
                 break;
         }
         this.topPlayer = new PlayerController(tamanhoDeckInicial, topPlayerColor);
+        this.notifyServer("Jogador do topo: " + this.topPlayer);
         this.bottomPlayer = new PlayerController(tamanhoDeckInicial, bottomPlayerColor);
+        this.notifyServer("Jogador de baixo: " + this.bottomPlayer);
         this.controllerBoard = new BoardController();
         this.commandInvoker = new CommandInvoker();
         this.controlDeFluxo = new FluxoController(this);
@@ -213,14 +218,14 @@ public class GameServidorController {
     private void openChannel() {
         threadPoolExecute(() -> {
             try (ServerSocket listener = new ServerSocket(60000)) {
-                notifyServer(getHoraSimples() + " - " + "Aguardando Jogadores");
+                notifyServer("Aguardando Jogadores");
                 
                 Socket topPlayerSocket = listener.accept();
-                notifyServer(getHoraSimples() + " - " + "Jogador Superior Entrou Com Endere\u00E7o: " + topPlayerSocket.getRemoteSocketAddress());
+                notifyServer("Jogador Superior Entrou Com Endere\u00E7o: " + topPlayerSocket.getRemoteSocketAddress());
                 topPlayer.setSocket(topPlayerSocket, bottomPlayer, "TOPPlayer");
                
                 Socket bottomPlayerSocket = listener.accept();
-                notifyServer(getHoraSimples() + " - " + "Jogador Inferior Entrou Com Endere\u00E7o: " + bottomPlayerSocket.getRemoteSocketAddress());
+                notifyServer("Jogador Inferior Entrou Com Endere\u00E7o: " + bottomPlayerSocket.getRemoteSocketAddress());
                 bottomPlayer.setSocket(bottomPlayerSocket, topPlayer, "BOTTOMPlayer");
 
                 controlDeFluxo.startGame();
@@ -229,9 +234,9 @@ public class GameServidorController {
                 }
 
                 if (!bottomPlayer.isConnectado()) {
-                    notifyServer(getHoraSimples() + " - " + "Jogador inferior desconectou...");
+                    notifyServer("Jogador inferior desconectou...");
                 } else {
-                    notifyServer(getHoraSimples() + " - " + "Jogador superior desconectou...");
+                    notifyServer("Jogador superior desconectou...");
                 }
                 listener.close();
             } catch (Exception ex) {
@@ -255,8 +260,7 @@ public class GameServidorController {
     }
 
     public String getHoraSimples() {
-        LocalDateTime now = LocalDateTime.now();
-        return (now.getHour() < 10 ? "0" + now.getHour() : now.getHour()) + ":" + now.getMinute() + ":" + (now.getSecond() < 10 ? "0" + now.getSecond() : now.getSecond());
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
     }
 
     public void threadPoolExecute(Runnable command) {
@@ -266,11 +270,15 @@ public class GameServidorController {
     public void addServerStatusObserver(ServerStatusObserver obs) {
         this.statusObservers.add(obs);
     }
+    
+    public void notifyServer(Loggable message) {
+        this.notifyServer("Execução de " + message.getTipoLog() + ": " + message.getDescricaoLog());
+    }
 
     public void notifyServer(String message) {
         SwingUtilities.invokeLater(() -> {
             this.statusObservers.forEach((statusObserver) -> {
-                statusObserver.onClientRequest(message);
+                statusObserver.onClientRequest(getHoraSimples() + " - " + message);
             });
         });
     }

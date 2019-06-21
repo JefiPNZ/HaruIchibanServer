@@ -31,7 +31,7 @@ public class AutomaticFlowering extends FluxoState {
     }
 
     @Override
-    public void sistemCommand() {
+    public void systemCommand() {
 
         Flor florBottom = bottomPlayer.removeFlower();
         Flor florTop = topPlayer.removeFlower();
@@ -93,6 +93,11 @@ public class AutomaticFlowering extends FluxoState {
     @Override
     public void nextFase() {
         game.getFluxoController().setFluxoState(new CheckBoard(ChooseFlower.class));
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Flora\u00e7\u00e3o autom\u00e1tica";
     }
 
 }

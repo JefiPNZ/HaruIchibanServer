@@ -1,6 +1,7 @@
 package br.udesc.ceavi.ppr.haruichiban.servidor.state;
 
 import br.udesc.ceavi.ppr.haruichiban.servidor.control.GameServidorController;
+import br.udesc.ceavi.ppr.haruichiban.servidor.control.Loggable;
 import br.udesc.ceavi.ppr.haruichiban.servidor.control.interfaces.IBoardController;
 import br.udesc.ceavi.ppr.haruichiban.servidor.control.interfaces.IFluxoController;
 import br.udesc.ceavi.ppr.haruichiban.servidor.control.interfaces.IPlayerController;
@@ -10,7 +11,7 @@ import com.google.gson.Gson;
  *
  * @author Gustavo C
  */
-public abstract class FluxoState {
+public abstract class FluxoState implements Loggable{
 
     //Fase
     public static final String CHOOSE_FLOWER = "ChooseFlowerState";
@@ -34,6 +35,7 @@ public abstract class FluxoState {
     protected IPlayerController bottomPlayer;
     protected GameServidorController game;
     protected IFluxoController fluxo;
+    
     public FluxoState() {
         game = GameServidorController.getInstance();
         boardController = game.getBoardController();
@@ -44,13 +46,18 @@ public abstract class FluxoState {
         fluxo = game.getFluxoController();
     }
 
-    public abstract void sistemCommand();
+    public abstract void systemCommand();
 
     public abstract void playerCommandFluxoState();
 
     public abstract void playerInformeFluxoStateEnd(IPlayerController player, String communicationPcackageParamentro);
 
     public abstract void nextFase();
+
+    @Override
+    public String getTipoLog() {
+        return "Estado";
+    }
 
     /**
      * Verifica se ambos dos player tem Estatos de END

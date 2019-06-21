@@ -36,7 +36,7 @@ public class ServerFrame extends JFrame implements ServerStatusObserver{
     
     private void initFrame(){
         this.setVisible(false);
-        this.setSize(new Dimension(400, 300));
+        this.setSize(new Dimension(800, 600));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());

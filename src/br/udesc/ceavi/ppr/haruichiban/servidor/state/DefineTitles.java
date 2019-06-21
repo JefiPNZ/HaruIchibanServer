@@ -10,16 +10,16 @@ import br.udesc.ceavi.ppr.haruichiban.servidor.model.flores.Flor;
  *
  * @author Gustavo C
  */
-public class DifineTitles extends FluxoState {
+public class DefineTitles extends FluxoState {
 
     private boolean empate;
 
-    public DifineTitles() {
+    public DefineTitles() {
         super();
     }
 
     @Override
-    public void sistemCommand() {
+    public void systemCommand() {
         Flor florTopo = topPlayer.getFlower();
         Flor florBottom = bottomPlayer.getFlower();
         topPlayer.getPackageServerOutput().newPost(ModelPost.GAME_MUDANCA_ESTADO, "Verificando Flores");
@@ -90,6 +90,11 @@ public class DifineTitles extends FluxoState {
     @Override
     public boolean faseEnd() {
         return super.faseEnd();
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Defini\u00e7\u00e3o dos T\u00edtulos";
     }
 
 }

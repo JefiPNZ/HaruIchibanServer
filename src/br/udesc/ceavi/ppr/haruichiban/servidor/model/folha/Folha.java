@@ -143,4 +143,9 @@ public abstract class Folha extends PecaTabuleiro {
         return hasPeca() && peca.getTipo() == TipoPeca.ANIMAL;
     }
 
+    @Override
+    public String toString() {
+        return "{" + "escura=" + isShowDarkSide + ", peca=" + peca + ", filhote=" + filhote + '}';
+    }
+
 }

@@ -1,5 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.servidor.command;
 
+import br.udesc.ceavi.ppr.haruichiban.servidor.control.GameServidorController;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,19 +21,23 @@ public class CommandInvoker {
         listaCommandExecutados = new ArrayList<>();
     }
 
-    public void addCommand(Command a) {
-        this.listaCommandNotExeuted.add(a);
+    public void addCommand(Command comando) {
+        this.listaCommandNotExeuted.add(comando);
     }
 
-    public void executeCommand(Command a) {
-        a.execute();
-        this.listaCommandExecutados.add(a);
+    public void executeCommand(Command comando) {
+        GameServidorController.getInstance().notifyServer(comando);
+        comando.execute();
+        this.listaCommandExecutados.add(comando);
     }
 
     public void executeAllCommandNotExeuted() {
-        for (Command command : listaCommandNotExeuted) {
+        listaCommandNotExeuted.stream().map((command) -> {
+            GameServidorController.getInstance().notifyServer(command);
+            return command;
+        }).forEachOrdered((command) -> {
             command.execute();
-        }
+        });
         this.listaCommandExecutados.addAll(listaCommandNotExeuted);
         listaCommandNotExeuted.clear();
     }
@@ -43,6 +48,7 @@ public class CommandInvoker {
 
     public void executeCommandGuardado() {
         commandGuardado.execute();
+        GameServidorController.getInstance().notifyServer(commandGuardado);
         listaCommandExecutados.add(commandGuardado);
         commandGuardado = null;
     }

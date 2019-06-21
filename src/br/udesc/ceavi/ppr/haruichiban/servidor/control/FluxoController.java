@@ -39,27 +39,9 @@ public class FluxoController implements IFluxoController {
     @Override
     public void startGame() {
         while (!topPlayer.isLogadoComSucesso() || !bottomPlayer.isLogadoComSucesso()) {
-            System.out.println();
-            /*VOCE AI! SIM VC QUE ESTA LENDO ISSO!
-            SABE POR QUE EU ESTOU AQUI! BOM E MUITO SIMPLES, ME REMOVA E O FLUXO DO JOGO NAO EXECUTA!
-            VC ESTA ESTRANHANDO AGORA.
-             -QUE ESCREVEU ISSO? - VC PENSANDO!
-            BOM EU TOU A 5 LINHA A CIMA SIM O System.out.println();
-            UM TANTO QUANTO BIZZARO EU SEI.
-            -O QUE O CARA QUE ESCREVEU ESSE COMANDO FUMOU PROVAVELMENTE? - É O QUE VC ESTA PENSANDO AGORA NAO É.
-            MAS!
-            NAO É BRINCADEIRA VA EM FRENTE TENTE APAGUE ME COMENTE, E VERAR QUE TUDO PARA! EM BAIXO AS PALAVRA DO AUTOR DA LINHA 44 DESSA CLASSE
-            
-            system.out.printiln,
-            TODO DIA TE USO PARA FAZER DEBUGAR UMA PROJETO,
-            EM TI ESCREVRO PALAVORES E COISA TOSCAS,
-            NOME DE METODOS,HORA, CONDIÇOES,SAIDA DE FUNCOES QUE JUGO ESTAREM ERRADA!
-            println QUANTAS VEZES TE TRAI COM printf,
-            ELE É MAIS FACIL DE CONCATENAR String MAS ISSO NÃO JUSTIFICA A TRAICAO
-            OBRIGADO POR GARANTIR QUE ESSE PROJETO FUNCIONE
-            
-            Gustavo C. Santos.
-             */
+            try {
+                Thread.sleep(100);
+            } catch(InterruptedException ex){}
         }
         try {
             Thread.sleep(2500);
@@ -77,8 +59,9 @@ public class FluxoController implements IFluxoController {
 
     @Override
     public synchronized void setFluxoState(FluxoState state) {
+        GameServidorController.getInstance().notifyServer(state);
         this.fluxoState = state;
-        fluxoState.sistemCommand();
+        fluxoState.systemCommand();
     }
 
     @Override

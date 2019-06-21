@@ -6,17 +6,18 @@ package br.udesc.ceavi.ppr.haruichiban.servidor.model;
  */
 public enum TitleOfGardener {
     
-    SEM_TITULO(0),
-    JUNIOR_TITULO(1),
-    SENIOR_TITULO(2),
-    SCREAM_LOSER(3),
-    SCREAM_WINNER(4),
-    SUPERME_GRADENER(10);
+    SEM_TITULO(0, "Sem Titulo"),
+    JUNIOR_TITULO(1, "Junior"),
+    SENIOR_TITULO(2, "Senior"),
+    SCREAM_LOSER(3, "Perdedor"),
+    SCREAM_WINNER(4, "Vencedor"),
+    SUPERME_GRADENER(10, "Jardineiro Supremo");
     
     private final int valor;
-
-    private TitleOfGardener(int valor) {
+    private final String descricao;
+    private TitleOfGardener(int valor, String descricao) {
         this.valor = valor;
+        this.descricao = descricao;
     }
 
     public int getValor() {
@@ -25,7 +26,7 @@ public enum TitleOfGardener {
 
     @Override
     public String toString() {
-        return "TitleOfGardener{"  + getClass().getSimpleName() + " - " + getValor() + '}';
+        return this.descricao;
     }
 
 }

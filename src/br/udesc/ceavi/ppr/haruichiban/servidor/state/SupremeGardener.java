@@ -21,7 +21,7 @@ public class SupremeGardener extends FluxoState {
 
     @Override
 
-    public void sistemCommand() {
+    public void systemCommand() {
         perdedorGardener = game.getJardineiroJunior(TitleOfGardener.SEM_TITULO);
         supremeGardener = game.getJardineiroJunior(TitleOfGardener.SUPERME_GRADENER);
         playerCommandFluxoState();
@@ -95,5 +95,10 @@ public class SupremeGardener extends FluxoState {
         bottomPlayer.getPackageServerOutput().newGet(ModelGet.OPONNET_PILESIZE, topPlayer.getPileSize());
         bottomPlayer.getPackageServerOutput().newGet(ModelGet.OPONNET_POINTS, topPlayer.getPlayerScore());
         bottomPlayer.getPackageServerOutput().newGet(ModelGet.GAME_BOARD, boardController.getTabuleiroProxy());
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Descoberto o novo Jardineiro Supremo";
     }
 }

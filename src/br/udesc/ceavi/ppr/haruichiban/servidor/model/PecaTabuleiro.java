@@ -43,4 +43,9 @@ public abstract class PecaTabuleiro {
         toObject.addProperty("name", getClass().getSimpleName());
         return toObject;
     }
+
+    @Override
+    public String toString() {
+        return "{cor=" + this.getCor() + ", tipo=" + this.getTipo() + "}";
+    }
 }

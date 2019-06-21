@@ -31,4 +31,5 @@ public abstract class Animal extends PecaTabuleiro {
         }
         return imagemPlataforma;
     }
+    
 }

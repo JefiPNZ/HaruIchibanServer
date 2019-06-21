@@ -26,7 +26,7 @@ public class FirstWind extends FluxoState {
     }
 
     @Override
-    public void sistemCommand() {
+    public void systemCommand() {
         jardineiroJunior = game.getJardineiroJunior(TitleOfGardener.JUNIOR_TITULO);
         jardineiroSenior = game.getJardineiroJunior(TitleOfGardener.SENIOR_TITULO);
         playerCommandFluxoState();
@@ -70,7 +70,12 @@ public class FirstWind extends FluxoState {
 
     @Override
     public void nextFase() {
-        fluxo.setFluxoState(new CheckBoard(NewDrackLeaf.class));
+        fluxo.setFluxoState(new CheckBoard(NewDarkLeaf.class));
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Primeiro vento da primavera";
     }
 
 }

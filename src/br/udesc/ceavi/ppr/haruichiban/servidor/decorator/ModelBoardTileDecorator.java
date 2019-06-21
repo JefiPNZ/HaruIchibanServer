@@ -77,5 +77,10 @@ public class ModelBoardTileDecorator implements IModelBoardTile{
     public JsonObject toJson() {
         return this.modelBoardTile.toJson();
     }
+
+    @Override
+    public String toString() {
+        return this.modelBoardTile.toString();
+    }
     
 }

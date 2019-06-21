@@ -21,5 +21,15 @@ public class MacroCommand implements Command {
     public void execute() {
         lista.forEach(command -> command.execute());
     }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Múltiplos comandos...";
+    }
+
+    @Override
+    public String getTipoLog() {
+        return "Comando";
+    }
     
 }

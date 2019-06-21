@@ -221,4 +221,9 @@ public class PlayerController implements IPlayerController {
         return packageServerOutput;
     }
 
+    @Override
+    public String toString() {
+        return "{" + "cor=" + player.getColor() + ", title=" + title + '}';
+    }
+
 }

@@ -37,16 +37,11 @@ public class CheckBoard extends FluxoState {
     }
 
     @Override
-    public void sistemCommand() {
-        System.out.println("Pontotuacao do Top Antes do Visitor " + topPlayer.getPlayerScore());
-        System.out.println("Pontotuacao do Bottom Antes do Visitor " + bottomPlayer.getPlayerScore());
+    public void systemCommand() {
         boardController.removeAnimal();
         topPlayer.getPackageServerOutput().newPost(ModelPost.PLAYER_NOTIFICAO_SIMPLER, "Verificando Pontuacao");
         bottomPlayer.getPackageServerOutput().newPost(ModelPost.PLAYER_NOTIFICAO_SIMPLER, "Verificando Pontuacao");
         pontuou = this.validaPontuacao();
-        System.out.println("Pontotuacao do Top Pós do Visitor " + topPlayer.getPlayerScore());
-        System.out.println("Pontotuacao do Bottom Pós do Visitor " + bottomPlayer.getPlayerScore());
-        System.out.println("");
         int pontosJogadorSuperior = topPlayer.getPlayerScore();
         int pontosJogadorInferior = bottomPlayer.getPlayerScore();
 
@@ -261,6 +256,11 @@ public class CheckBoard extends FluxoState {
         } catch (InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(CheckBoard.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Validando estado do tabuleiro";
     }
 
 }

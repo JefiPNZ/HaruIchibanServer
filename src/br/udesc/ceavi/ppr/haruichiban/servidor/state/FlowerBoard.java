@@ -25,7 +25,7 @@ public class FlowerBoard extends FluxoState {
     }
 
     @Override
-    public void sistemCommand() {
+    public void systemCommand() {
         IPlayerController junior = game.getJardineiroJunior(TitleOfGardener.JUNIOR_TITULO);
         IPlayerController senior = game.getJardineiroJunior(TitleOfGardener.SENIOR_TITULO);
 
@@ -91,6 +91,11 @@ public class FlowerBoard extends FluxoState {
 
     public boolean faseEnd() {
         return super.faseEnd();
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Flora\u00e7\u00e3o";
     }
 
 }

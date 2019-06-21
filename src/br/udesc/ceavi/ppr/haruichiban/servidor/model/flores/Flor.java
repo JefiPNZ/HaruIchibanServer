@@ -37,7 +37,7 @@ public abstract class Flor extends PecaTabuleiro {
 
     @Override
     public String toString() {
-        return "Flor{" + "valor=" + valor + ", playerOrigem=" + playerOrigem.getColor() + '}';
+        return "{" + "valor=" + valor + ", playerOrigem=" + playerOrigem.getColor() + '}';
     }
 
     

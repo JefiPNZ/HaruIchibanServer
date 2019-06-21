@@ -15,17 +15,17 @@ import java.util.List;
  *
  * @author Gustavo C
  */
-public class NewDrackLeaf extends FluxoState {
+public class NewDarkLeaf extends FluxoState {
 
     private IPlayerController jardineiroJunior;
     private IPlayerController jardineiroSenior;
 
-    public NewDrackLeaf() {
+    public NewDarkLeaf() {
         super();
     }
 
     @Override
-    public void sistemCommand() {
+    public void systemCommand() {
         jardineiroJunior = game.getJardineiroJunior(TitleOfGardener.JUNIOR_TITULO);
         jardineiroSenior = game.getJardineiroJunior(TitleOfGardener.SENIOR_TITULO);
         playerCommandFluxoState();
@@ -74,6 +74,11 @@ public class NewDrackLeaf extends FluxoState {
     @Override
     public boolean faseEnd() {
         return super.faseEnd();
+    }
+
+    @Override
+    public String getDescricaoLog() {
+        return "Defini\u00e7\u00e3o da folha escura";
     }
 
 }

@@ -33,4 +33,14 @@ public class MoveAnimalCommand implements Command {
         boardTile.getFolha().colocarPecaNaFolha(animal);
     }
 
+    @Override
+    public String getDescricaoLog() {
+        return "Movimentado animal " + this.animal + " para o tile: " + this.boardTile;
+    }
+
+    @Override
+    public String getTipoLog() {
+        return "Comando";
+    }
+
 }

@@ -28,4 +28,14 @@ public class FlowerBoardCommand implements Command {
         boardTile.getFolha().colocarPecaNaFolha(flor);
     }
 
+    @Override
+    public String getDescricaoLog() {
+        return "Colocada flor: " + flor + " no tile: " + this.boardTile;
+    }
+
+    @Override
+    public String getTipoLog() {
+        return "Comando";
+    }
+
 }
