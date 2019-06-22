@@ -27,7 +27,7 @@ public class HorizontalBoardTilePatternVisitor implements BoardTileScoreVisitor{
             tile.setPontuado(TipoPontuacao.HORIZONTAL);
             this.pontuacao++;
             if(tile.getProximoTileHorizontal()!= null){
-                this.visit(tile.getProximoTileHorizontal());
+                tile.getProximoTileHorizontal().accept(this);
             }
         }
     }

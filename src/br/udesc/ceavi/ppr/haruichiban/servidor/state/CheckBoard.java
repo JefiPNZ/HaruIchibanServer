@@ -172,7 +172,7 @@ public class CheckBoard extends FluxoState {
         if (row > tabuleiro.length - 4 || column > tabuleiro.length - 4) {
             return 0;
         }
-        visitor.visit(tabuleiro[row][column]);
+        tabuleiro[row][column].accept(visitor);
         if (visitor.getPontuacao() >= 4) {
             if (visitor.getPontuacao() >= 5) {
                 return 5;
@@ -186,7 +186,7 @@ public class CheckBoard extends FluxoState {
         if (row > tabuleiro.length - 4 || column < 3) {
             return 0;
         }
-        visitor.visit(tabuleiro[row][column]);
+        tabuleiro[row][column].accept(visitor);
         if (visitor.getPontuacao() >= 4) {
             if (visitor.getPontuacao() >= 5) {
                 return 5;
@@ -200,7 +200,7 @@ public class CheckBoard extends FluxoState {
         if (column > tabuleiro[row].length - 4) {
             return 0;
         }
-        visitor.visit(tabuleiro[row][column]);
+        tabuleiro[row][column].accept(visitor);
         if (visitor.getPontuacao() >= 4) {
             if (visitor.getPontuacao() >= 5) {
                 return 5;
@@ -228,7 +228,7 @@ public class CheckBoard extends FluxoState {
         if (row > tabuleiro.length - 2 || column > tabuleiro.length - 2) {
             return 0;
         }
-        visitor.visit(tabuleiro[row][column]);
+        tabuleiro[row][column].accept(visitor);
         if (visitor.getPontuacao() >= 4) {
             return 1;
         }

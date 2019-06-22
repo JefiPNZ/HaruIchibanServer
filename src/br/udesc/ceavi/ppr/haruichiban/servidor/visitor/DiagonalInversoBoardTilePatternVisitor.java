@@ -27,7 +27,7 @@ public class DiagonalInversoBoardTilePatternVisitor implements BoardTileScoreVis
             tile.setPontuado(TipoPontuacao.DIAGONAL_INVERSO);
             this.pontuacao++;
             if(tile.getProximoTileDiagonalInverso()!= null){
-                this.visit(tile.getProximoTileDiagonalInverso());
+                tile.getProximoTileDiagonalInverso().accept(this);
             }
         }
     }

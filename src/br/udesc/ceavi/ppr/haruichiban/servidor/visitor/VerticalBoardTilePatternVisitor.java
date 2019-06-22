@@ -27,7 +27,7 @@ public class VerticalBoardTilePatternVisitor implements BoardTileScoreVisitor{
             tile.setPontuado(TipoPontuacao.VERTICAL);
             this.pontuacao++;
             if(tile.getProximoTileVertical()!= null){
-                this.visit(tile.getProximoTileVertical());
+                tile.getProximoTileVertical().accept(this);
             }
         }
     }

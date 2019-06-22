@@ -25,9 +25,9 @@ public class QuadradoBoardTilePatternVisitor implements BoardTileScoreVisitor{
             visitor.setJogador(this.jogador);
             if(tile.getProximoTileHorizontal() != null && tile.getProximoTileDiagonal() != null &&
                tile.getProximoTileVertical()   != null){
-                visitor.visit(tile.getProximoTileHorizontal());
-                visitor.visit(tile.getProximoTileDiagonal());
-                visitor.visit(tile.getProximoTileVertical());
+                tile.getProximoTileHorizontal().accept(visitor);
+                tile.getProximoTileDiagonal().accept(visitor);
+                tile.getProximoTileVertical().accept(visitor);
             }
             this.pontuacao += visitor.getPontuacao();
         }

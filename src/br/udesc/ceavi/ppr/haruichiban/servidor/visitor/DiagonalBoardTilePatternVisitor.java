@@ -27,7 +27,7 @@ public class DiagonalBoardTilePatternVisitor implements BoardTileScoreVisitor{
             tile.setPontuado(TipoPontuacao.DIAGONAL);
             this.pontuacao++;
             if(tile.getProximoTileDiagonal() != null){
-                this.visit(tile.getProximoTileDiagonal());
+                tile.getProximoTileDiagonal().accept(this);
             }
         }
     }
