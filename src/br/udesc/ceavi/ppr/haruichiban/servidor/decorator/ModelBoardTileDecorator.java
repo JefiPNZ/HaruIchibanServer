@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
  *
  * @author Jeferson Penz
  */
-public class ModelBoardTileDecorator implements IModelBoardTile{
+public abstract class ModelBoardTileDecorator implements IModelBoardTile{
     
     protected IModelBoardTile modelBoardTile;
 
@@ -40,7 +40,7 @@ public class ModelBoardTileDecorator implements IModelBoardTile{
 
     @Override
     public void accept(BoardTileScoreVisitor visitor) {
-        this.modelBoardTile.accept(visitor);
+        visitor.visit(this);
     }
 
     @Override

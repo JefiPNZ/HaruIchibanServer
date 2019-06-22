@@ -209,8 +209,6 @@ public class GameServidorController {
         return controlDeFluxo;
     }
 
-
-
     public void executeCommand(Command command) {
         this.commandInvoker.executeCommand(command);
     }
