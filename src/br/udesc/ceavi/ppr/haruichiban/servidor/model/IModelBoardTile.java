@@ -27,6 +27,8 @@ public interface IModelBoardTile {
     
     public IModelBoardTile getProximoTileDiagonal();
     
+    public IModelBoardTile getProximoTileDiagonalInverso();
+    
     public void setPontuado(TipoPontuacao pontuado);
     
     public void limpaPontuado();

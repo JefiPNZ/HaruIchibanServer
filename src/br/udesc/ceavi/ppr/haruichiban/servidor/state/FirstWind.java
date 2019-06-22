@@ -50,9 +50,6 @@ public class FirstWind extends FluxoState {
     @Override
     public void playerInformeFluxoStateEnd(IPlayerController player, String parametros) {
         List<String> parametro = gson.fromJson(parametros, ArrayList.class);
-        //Tratamento de movimentacao
-        // index 0 -> Informa a posicao escolhida(Point.class)
-        // index 1 -> Informa a direcao escolhida(Diretion.class)
 
         Point folhaAMover = gson.fromJson(parametro.get(0), Point.class);
         Diretion diretion = gson.fromJson(parametro.get(1), Diretion.class);
@@ -63,9 +60,6 @@ public class FirstWind extends FluxoState {
         calcularMovimento(folhaAMover, fim, diretion, boardController.getBoardTile(folhaAMover).removeFolha(), macroCommand);
         game.executeCommand(macroCommand);
 
-//        JuniorFirstWind juniorFirstWind = new JuniorFirstWind();
-//        juniorFirstWind.addPoint(folhaAMover);
-//        juniorFirstWind.addDiretion(diretion);
         topPlayer.getPackageServerOutput().newGet(ModelGet.GAME_BOARD, boardController.getTabuleiroProxy());
         bottomPlayer.getPackageServerOutput().newGet(ModelGet.GAME_BOARD, boardController.getTabuleiroProxy());
         try {

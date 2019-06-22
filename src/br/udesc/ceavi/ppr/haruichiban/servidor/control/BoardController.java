@@ -119,7 +119,7 @@ public class BoardController implements IBoardController {
             for (int column = 0; column < tabuleiro[row].length; column++) {
                 IModelBoardTile tile = tabuleiro[row][column];
                 if (tile.hasFolha() && tile.getFolha().isEscura()) {
-                    setFolhaEscura(new Point(row, column));
+                    setFolhaEscura(new Point(column, row));
                 }
                 if (tile.hasFolha() && tile.getFolha().hasFilhote()) {
                     tile.getFolha().colocarPecaNaFolha(GameServidorController.getInstance().getFactoryPecas().createAnimal(tile.getFolha().getFilhote().getCor()));

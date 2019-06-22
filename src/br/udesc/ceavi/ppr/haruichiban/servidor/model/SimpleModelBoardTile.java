@@ -115,6 +115,11 @@ public class SimpleModelBoardTile implements IModelBoardTile{
     }
 
     @Override
+    public IModelBoardTile getProximoTileDiagonalInverso() {
+        return null;
+    }
+
+    @Override
     public void limpaPontuado() {
         this.pontuado = new ArrayList<>();
     }

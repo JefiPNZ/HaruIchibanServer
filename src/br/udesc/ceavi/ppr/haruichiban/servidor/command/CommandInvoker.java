@@ -32,10 +32,8 @@ public class CommandInvoker {
     }
 
     public void executeAllCommandNotExeuted() {
-        listaCommandNotExeuted.stream().map((command) -> {
+        listaCommandNotExeuted.forEach((command) -> {
             GameServidorController.getInstance().notifyServer(command);
-            return command;
-        }).forEachOrdered((command) -> {
             command.execute();
         });
         this.listaCommandExecutados.addAll(listaCommandNotExeuted);

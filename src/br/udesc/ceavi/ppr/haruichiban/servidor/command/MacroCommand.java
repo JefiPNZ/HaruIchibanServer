@@ -1,5 +1,6 @@
 package br.udesc.ceavi.ppr.haruichiban.servidor.command;
 
+import br.udesc.ceavi.ppr.haruichiban.servidor.control.GameServidorController;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,10 @@ public class MacroCommand implements Command {
     
     @Override
     public void execute() {
-        lista.forEach(command -> command.execute());
+        lista.forEach((command) -> {
+            GameServidorController.getInstance().notifyServer(command);
+            command.execute();
+        });
     }
 
     @Override

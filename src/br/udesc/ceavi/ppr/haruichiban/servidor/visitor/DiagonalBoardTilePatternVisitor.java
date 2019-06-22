@@ -11,8 +11,8 @@ import br.udesc.ceavi.ppr.haruichiban.servidor.model.flores.Flor;
  */
 public class DiagonalBoardTilePatternVisitor implements BoardTileScoreVisitor{
 
-    private int pontuacao = 0;
-    private ModelPlayer jogador;
+    protected int pontuacao = 0;
+    protected ModelPlayer jogador;
     
     @Override
     public void visit(IModelBoardTile tile) {
@@ -38,6 +38,7 @@ public class DiagonalBoardTilePatternVisitor implements BoardTileScoreVisitor{
     
     public void limpa(){
         this.pontuacao = 0;
+        this.jogador = null;
     }
     
 }

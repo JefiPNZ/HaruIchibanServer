@@ -39,6 +39,7 @@ public class QuadradoBoardTilePatternVisitor implements BoardTileScoreVisitor{
     
     public void limpa(){
         this.pontuacao = 0;
+        this.jogador = null;
     }
     
 }

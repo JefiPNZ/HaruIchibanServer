@@ -59,6 +59,11 @@ public class ModelBoardTileDecorator implements IModelBoardTile{
     }
 
     @Override
+    public IModelBoardTile getProximoTileDiagonalInverso() {
+        return this.modelBoardTile.getProximoTileDiagonalInverso();
+    }
+
+    @Override
     public void limpaPontuado() {
         this.modelBoardTile.limpaPontuado();
     }

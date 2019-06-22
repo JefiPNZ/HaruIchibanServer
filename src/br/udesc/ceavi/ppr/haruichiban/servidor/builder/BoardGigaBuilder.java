@@ -3,6 +3,7 @@ package br.udesc.ceavi.ppr.haruichiban.servidor.builder;
 import br.udesc.ceavi.ppr.haruichiban.servidor.control.GameServidorController;
 import br.udesc.ceavi.ppr.haruichiban.servidor.model.IModelBoardTile;
 import br.udesc.ceavi.ppr.haruichiban.servidor.decorator.ModelBoardTileDiagonalDecorator;
+import br.udesc.ceavi.ppr.haruichiban.servidor.decorator.ModelBoardTileDiagonalInversoDecorator;
 import br.udesc.ceavi.ppr.haruichiban.servidor.decorator.ModelBoardTileHorizontalDecorator;
 import br.udesc.ceavi.ppr.haruichiban.servidor.decorator.ModelBoardTileVerticalDecorator;
 import br.udesc.ceavi.ppr.haruichiban.servidor.model.SimpleModelBoardTile;
@@ -41,16 +42,21 @@ public class BoardGigaBuilder extends BoardBuilder {
                 this.board[i][j] = new SimpleModelBoardTile();
             }
         }
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                if(i + 1 < this.board.length){
-                    this.board[i][j] = new ModelBoardTileVerticalDecorator(this.board[i][j], this.board[i + 1][j]);
-                    if(j + 1 < this.board[i].length){
-                        this.board[i][j] = new ModelBoardTileDiagonalDecorator(this.board[i][j], this.board[i + 1][j + 1]);
+        for (int row = 0; row < 7; row++) {
+            for (int column = 0; column < 7; column++) {
+                if(row + 1 < this.board.length){
+                    this.board[row][column] = new ModelBoardTileVerticalDecorator(this.board[row][column], this.board[row + 1][column]);
+                    if(column + 1 < this.board[row].length){
+                        this.board[row][column] = new ModelBoardTileDiagonalDecorator(this.board[row][column], this.board[row + 1][column + 1]);
                     }
                 }
-                if(j + 1 < this.board[i].length){
-                    this.board[i][j] = new ModelBoardTileHorizontalDecorator(this.board[i][j], this.board[i][j + 1]);
+                if(column + 1 < this.board[row].length){
+                    this.board[row][column] = new ModelBoardTileHorizontalDecorator(this.board[row][column], this.board[row][column + 1]);
+                }
+            }
+            for (int column = 1; column < 7; column++) {
+                if(row + 1 < this.board.length){
+                    this.board[row][column] = new ModelBoardTileDiagonalInversoDecorator(this.board[row][column], this.board[row + 1][column - 1]);
                 }
             }
         }

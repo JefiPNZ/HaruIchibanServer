@@ -9,6 +9,7 @@ import br.udesc.ceavi.ppr.haruichiban.servidor.model.TipoPeca;
 import br.udesc.ceavi.ppr.haruichiban.servidor.model.TitleOfGardener;
 import br.udesc.ceavi.ppr.haruichiban.servidor.model.flores.Flor;
 import br.udesc.ceavi.ppr.haruichiban.servidor.visitor.DiagonalBoardTilePatternVisitor;
+import br.udesc.ceavi.ppr.haruichiban.servidor.visitor.DiagonalInversoBoardTilePatternVisitor;
 import br.udesc.ceavi.ppr.haruichiban.servidor.visitor.HorizontalBoardTilePatternVisitor;
 import br.udesc.ceavi.ppr.haruichiban.servidor.visitor.QuadradoBoardTilePatternVisitor;
 import br.udesc.ceavi.ppr.haruichiban.servidor.visitor.VerticalBoardTilePatternVisitor;
@@ -51,7 +52,7 @@ public class CheckBoard extends FluxoState {
                 vencedor = true;
 
             } else if (pontosJogadorInferior > pontosJogadorSuperior) {
-                bootomVenceu();
+                bottomVenceu();
                 vencedor = true;
             }
         }
@@ -66,7 +67,7 @@ public class CheckBoard extends FluxoState {
                 vencedor = true;
             } else if (pontosJogadorInferior >= 5) {
                 //BOTTOM É O VENCEDOR
-                bootomVenceu();
+                bottomVenceu();
                 vencedor = true;
             }
         }
@@ -90,7 +91,7 @@ public class CheckBoard extends FluxoState {
         playerCommandFluxoState();
     }
 
-    private void bootomVenceu() {
+    private void bottomVenceu() {
         game.limparListaJardineiro();
         game.setJardineiro(TitleOfGardener.SUPERME_GRADENER, bottomPlayer);
         game.setJardineiro(TitleOfGardener.SEM_TITULO, topPlayer);
@@ -120,6 +121,7 @@ public class CheckBoard extends FluxoState {
         ModelPlayer primeiroPontuador = null;
         ModelPlayer segundoPontuador = null;
         DiagonalBoardTilePatternVisitor diagonalVisitor = new DiagonalBoardTilePatternVisitor();
+        DiagonalInversoBoardTilePatternVisitor diagonalInvVisitor = new DiagonalInversoBoardTilePatternVisitor();
         HorizontalBoardTilePatternVisitor horizontalVisitor = new HorizontalBoardTilePatternVisitor();
         VerticalBoardTilePatternVisitor verticalVisitor = new VerticalBoardTilePatternVisitor();
         QuadradoBoardTilePatternVisitor quadradoVisitor = new QuadradoBoardTilePatternVisitor();
@@ -133,7 +135,9 @@ public class CheckBoard extends FluxoState {
                 int pontuacaoPeca = 0;
                 ModelPlayer origem = ((Flor) tile.getFolha().getPeca()).getPlayerOrigem();
                 pontuacaoPeca += visitaDiagonal(diagonalVisitor, row, column);
+                pontuacaoPeca += visitaDiagonalInversa(diagonalInvVisitor, row, column);
                 diagonalVisitor.limpa();
+                diagonalInvVisitor.limpa();
                 pontuacaoPeca += visitaHorizontal(horizontalVisitor, row, column);
                 horizontalVisitor.limpa();
                 pontuacaoPeca += visitaVertical(verticalVisitor, row, column);
@@ -166,6 +170,20 @@ public class CheckBoard extends FluxoState {
 
     private int visitaDiagonal(DiagonalBoardTilePatternVisitor visitor, int row, int column) {
         if (row > tabuleiro.length - 4 || column > tabuleiro.length - 4) {
+            return 0;
+        }
+        visitor.visit(tabuleiro[row][column]);
+        if (visitor.getPontuacao() >= 4) {
+            if (visitor.getPontuacao() >= 5) {
+                return 5;
+            }
+            return 3;
+        }
+        return 0;
+    }
+
+    private int visitaDiagonalInversa(DiagonalInversoBoardTilePatternVisitor visitor, int row, int column) {
+        if (row > tabuleiro.length - 4 || column < 3) {
             return 0;
         }
         visitor.visit(tabuleiro[row][column]);
